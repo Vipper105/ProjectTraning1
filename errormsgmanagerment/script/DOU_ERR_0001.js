@@ -106,7 +106,7 @@
 
     			var cols = [ 
     	             { Type : "Status", Hidden : 0, Width : 50, Align : "Center", ColMerge : 0, SaveName : "ibflag" }, 
-    	             { Type : "CheckBox", Hidden : 0, Width : 50, Align : "Center", ColMerge : 0, SaveName : "del_chk" }, 
+    	             { Type : "DelCheck", Hidden : 0, Width : 50, Align : "Center", ColMerge : 0, SaveName : "del_chk" }, 
     	             { Type : "Text", Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "err_msg_cd", KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1, EditLen: 8 }, 
     	             { Type : "Combo", Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "err_tp_cd", KeyField : 1, Format : "", UpdateEdit :1, InsertEdit : 1, ComboCode:"U|S|B", ComboText:"UI|SERVER|BOTH"}, 
     	             { Type : "Combo", Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "err_lvl_cd", KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1, ComboCode:"E|W|I", ComboText:"ERROR|WARNING|INFO" }, 
