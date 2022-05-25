@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sqls>
 	<querys>
-		<query name="ErrorMessageDAOComErrMsgVODSQL">
+		<query name="ErrorMsgManagermentDBDAOErrMsgVODSQL">
 			<desc><![CDATA[   ]]></desc>
 			<sql><![CDATA[
-DELETE FROM  com_err_msg
-WHERE err_msg_cd = @[err_msg_cd]
-AND   lang_tp_cd = 'ENG'			]]></sql>
+DELETE FROM COM_ERR_MSG
+WHERE	ERR_MSG_CD = @[err_msg_cd]
+			]]></sql>
 			<params>
 				<param name="err_msg_cd" type="12" value="" out="N"/>
 			</params>

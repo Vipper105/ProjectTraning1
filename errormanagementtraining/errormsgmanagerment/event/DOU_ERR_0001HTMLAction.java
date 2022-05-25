@@ -1,49 +1,48 @@
 /*=========================================================
-*Copyright(c) 2009 CyberLogitec
-*@FileName : ErrorMessageHTMLAction.java
+*Copyright(c) 2022 CyberLogitec
+*@FileName : DOU_ERR_0001HTMLAction.java
 *@FileTitle : Error Message Management
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2009.02.26
-*@LastModifier : 김경범
+*@LastModifyDate : 2022.05.17
+*@LastModifier : 
 *@LastVersion : 1.0
-* 2009.02.26 김경범
+* 2022.05.17 
 * 1.0 Creation
 =========================================================*/
-package com.clt.syscommon.management.opus.errormessage.event;
+package com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.event;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.vo.ErrMsgVO;
 import com.clt.framework.component.util.JSPUtil;
 import com.clt.framework.core.controller.html.HTMLActionException;
 import com.clt.framework.core.layer.event.Event;
 import com.clt.framework.core.layer.event.EventResponse;
 import com.clt.framework.support.controller.HTMLActionSupport;
 import com.clt.framework.support.controller.html.FormCommand;
-import com.clt.syscommon.common.table.ComErrMsgVO;
-
 
 /**
  * HTTP Parser<br>
- * - NIS2010.APP-INF.src.com.clt.syscommon.nis2010.management.errormessagemanagement 화면을 통해 서버로 전송되는 HTML DOM 객체의 Value를 자바 변수로 Parsing<br>
- * - Parsing 한 정보를 Event로 변환, request에 담아 ErrorMessageManagementSC로 실행요청<br>
- * - ErrorMessageManagementSC에서 View(JSP)로 실행결과를 전송하는 EventResponse를 request에 셋팅<br>
- * @author KyungBum Kim
- * @see ErrorMessageManagementEvent 참조
- * @since J2EE 1.4
+ * - com.clt.apps.opus.esm.clv.errormanagementtraining 화면을 통해 서버로 전송되는 HTML DOM 객체의 Value를 자바 변수로 Parsing<br>
+ * - Parsing 한 정보를 Event로 변환, request에 담아 ErrorManagementTrainingSC로 실행요청<br>
+ * - ErrorManagementTrainingSC에서 View(JSP)로 실행결과를 전송하는 EventResponse를 request에 셋팅<br>
+ * @author dinhhuy
+ * @see ErrorManagementTrainingEvent 참조
+ * @since J2EE 1.6
  */
 
-public class ErrorMessageHTMLAction extends HTMLActionSupport {
+public class DOU_ERR_0001HTMLAction extends HTMLActionSupport {
 
 	private static final long serialVersionUID = 1L;
 	/**
-	 * ErrorMessageHTMLAction 객체를 생성
+	 * DOU_ERR_0001HTMLAction 객체를 생성
 	 */
-	public ErrorMessageHTMLAction() {}
+	public DOU_ERR_0001HTMLAction() {}
 
 	/**
 	 * HTML DOM 객체의 Value를 자바 변수로 Parsing<br>
-	 * HttpRequst의 정보를 ErrorMessageManagementEvent로 파싱하여 request에 셋팅<br>
+	 * HttpRequst의 정보를 ErrorManagementTrainingEvent로 파싱하여 request에 셋팅<br>
 	 * @param request HttpServletRequest HttpRequest
 	 * @return Event Event interface를 구현한 객체
 	 * @exception HTMLActionException
@@ -51,19 +50,19 @@ public class ErrorMessageHTMLAction extends HTMLActionSupport {
 	public Event perform(HttpServletRequest request) throws HTMLActionException {
 		
     	FormCommand command = FormCommand.fromRequest(request);
-		ErrorMessageManagementEvent event = new ErrorMessageManagementEvent();
-
-		ComErrMsgVO comErrMsgVO  = new ComErrMsgVO();
-		comErrMsgVO.setErrMsgCd(JSPUtil.getParameter(request, "s_err_msg_cd", ""));
-		comErrMsgVO.setErrMsg(JSPUtil.getParameter(request, "s_err_msg", ""));
-		comErrMsgVO.setLangTpCd(JSPUtil.getParameter(request, "lang_tp_cd", ""));
-		event.setComErrMsgVO(comErrMsgVO);
-
+		DouErr0001Event event = new DouErr0001Event();
+		
 		if(command.isCommand(FormCommand.MULTI)) {
-			event.setComErrMsgVOS((ComErrMsgVO[])getVOs(request, ComErrMsgVO .class,""));
+			event.setErrMsgVOS((ErrMsgVO[])getVOs(request, ErrMsgVO .class,""));
 		}
-
-		request.setAttribute("Event", event);
+		else if(command.isCommand(FormCommand.SEARCH)) {
+//			event.setErrMsgVO((ErrMsgVO)getVO(request, ErrMsgVO .class));
+			ErrMsgVO errMstg = new ErrMsgVO();
+			errMstg.setErrMsgCd(JSPUtil.getParameter(request, "s_err_msg_cd", ""));
+//			System.err.println("err code nhập vào"+ errMstg.getErrMsgCd());
+			errMstg.setErrMsg(JSPUtil.getParameter(request, "s_err_msg", ""));
+			event.setErrMsgVO(errMstg);
+		}
 
 		return  event;
 	}
@@ -89,5 +88,4 @@ public class ErrorMessageHTMLAction extends HTMLActionSupport {
 	public void doEnd(HttpServletRequest request, Event event) {
 		request.setAttribute("Event", event);
 	}
-
 }

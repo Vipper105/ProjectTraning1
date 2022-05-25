@@ -1,31 +1,29 @@
 /*=========================================================
-*Copyright(c) 2009 CyberLogitec
-*@FileName : ${FILE_NAME}.java
+*Copyright(c) 2022 CyberLogitec
+*@FileName : ErrorMsgManagermentDBDAOErrMsgVODSQL.java
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2009.05.04
-*@LastModifier : 김경범
+*@LastModifyDate : 2022.05.18
+*@LastModifier : 
 *@LastVersion : 1.0
-* 2009.05.04 김경범
+* 2022.05.18 
 * 1.0 Creation
 =========================================================*/
-package com.clt.syscommon.management.opus.errormessage.integration;
+package com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.integration;
 
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
-
 import com.clt.framework.support.db.ISQLTemplate;
 
 /**
  *
- * @author KyungBum Kim
- * @see 
- * @since J2EE 1.4
+ * @author dinhhuy
+ * @see DAO 참조
+ * @since J2EE 1.6
  */
 
-public class ErrorMessageDAOComErrMsgVODSQL implements ISQLTemplate{
+public class ErrorMsgManagermentDBDAOErrMsgVODSQL implements ISQLTemplate{
 
 	private StringBuffer query = new StringBuffer();
 	
@@ -39,19 +37,22 @@ public class ErrorMessageDAOComErrMsgVODSQL implements ISQLTemplate{
 	  *    
 	  * </pre>
 	  */
-	public ErrorMessageDAOComErrMsgVODSQL(){
+	public ErrorMsgManagermentDBDAOErrMsgVODSQL(){
 		setQuery();
-		
 		params = new HashMap<String,String[]>();
 		String tmp = null;
 		String[] arrTmp = null;
-		tmp = "12,N";
+		tmp = java.sql.Types.VARCHAR + ",N";
 		arrTmp = tmp.split(",");
 		if(arrTmp.length !=2){
 			throw new IllegalArgumentException();
 		}
 		params.put("err_msg_cd",new String[]{arrTmp[0],arrTmp[1]});
 
+		query.append("/*").append("\n"); 
+		query.append("Path : com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.integration").append("\n"); 
+		query.append("FileName : ErrorMsgManagermentDBDAOErrMsgVODSQL").append("\n"); 
+		query.append("*/").append("\n"); 
 	}
 	
 	public String getSQL(){
@@ -61,18 +62,13 @@ public class ErrorMessageDAOComErrMsgVODSQL implements ISQLTemplate{
 	public HashMap<String,String[]> getParams() {
 		return params;
 	}
-	
+
 	/**
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("DELETE FROM  com_err_msg" ).append("\n"); 
-		query.append("WHERE err_msg_cd = @[err_msg_cd]" ).append("\n"); 
-		query.append("AND   lang_tp_cd = 'ENG'" ).append("\n"); 
+		query.append("DELETE FROM COM_ERR_MSG" ).append("\n"); 
+		query.append("WHERE	ERR_MSG_CD = @[err_msg_cd]" ).append("\n"); 
 
-		query.append("/*").append("\n"); 
-		query.append("Path : com.clt.syscommon.nis2010.management.errormessagemanagement.errormessage.integration").append("\n"); 
-		query.append("FileName : ErrorMessageDAOComErrMsgVODSQL").append("\n"); 
-		query.append("*/").append("\n"); 
 	}
 }

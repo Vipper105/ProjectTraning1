@@ -1,16 +1,16 @@
 /*=========================================================
-*Copyright(c) 2018 CyberLogitec
-*@FileName : ErrorMessageDAOComErrMsgVORSQL.java
+*Copyright(c) 2022 CyberLogitec
+*@FileName : ErrorMsgManagermentDBDAOErrMsgVORSQL.java
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2018.03.21
+*@LastModifyDate : 2022.05.19
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2018.03.21 
+* 2022.05.19 
 * 1.0 Creation
 =========================================================*/
-package com.clt.syscommon.management.opus.errormessage.integration;
+package com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.integration;
 
 import java.util.HashMap;
 import org.apache.log4j.Logger;
@@ -18,12 +18,12 @@ import com.clt.framework.support.db.ISQLTemplate;
 
 /**
  *
- * @author 
+ * @author dinhhuy
  * @see DAO 참조
  * @since J2EE 1.6
  */
 
-public class ErrorMessageDAOComErrMsgVORSQL implements ISQLTemplate{
+public class ErrorMsgManagermentDBDAOErrMsgVORSQL implements ISQLTemplate{
 
 	private StringBuffer query = new StringBuffer();
 	
@@ -34,10 +34,10 @@ public class ErrorMessageDAOComErrMsgVORSQL implements ISQLTemplate{
 	
 	/**
 	  * <pre>
-	  * select error message   
+	  *    
 	  * </pre>
 	  */
-	public ErrorMessageDAOComErrMsgVORSQL(){
+	public ErrorMsgManagermentDBDAOErrMsgVORSQL(){
 		setQuery();
 		params = new HashMap<String,String[]>();
 		String tmp = null;
@@ -57,8 +57,8 @@ public class ErrorMessageDAOComErrMsgVORSQL implements ISQLTemplate{
 		params.put("err_msg_cd",new String[]{arrTmp[0],arrTmp[1]});
 
 		query.append("/*").append("\n"); 
-		query.append("Path : com.clt.syscommon.management.opus.errormessage.integration").append("\n"); 
-		query.append("FileName : ErrorMessageDAOComErrMsgVORSQL").append("\n"); 
+		query.append("Path : com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.integration").append("\n"); 
+		query.append("FileName : ErrorMsgManagermentDBDAOErrMsgVORSQL").append("\n"); 
 		query.append("*/").append("\n"); 
 	}
 	
@@ -74,19 +74,25 @@ public class ErrorMessageDAOComErrMsgVORSQL implements ISQLTemplate{
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("SELECT                                                                " ).append("\n"); 
-		query.append("   	err_msg_cd,  " ).append("\n"); 
-		query.append(" 	err_lvl_cd,                      " ).append("\n"); 
-		query.append("   	err_tp_cd,                                               " ).append("\n"); 
-		query.append("   	err_msg,                                               " ).append("\n"); 
-		query.append("   	err_desc                                                            " ).append("\n"); 
-		query.append("FROM com_err_msg                                                      " ).append("\n"); 
-		query.append("WHERE lang_tp_cd = 'ENG'" ).append("\n"); 
+		query.append("SELECT " ).append("\n"); 
+		query.append("	EDW_UPD_DT" ).append("\n"); 
+		query.append(",	UPD_DT" ).append("\n"); 
+		query.append(",	UPD_USR_ID" ).append("\n"); 
+		query.append(",	CRE_DT" ).append("\n"); 
+		query.append(",	CRE_USR_ID" ).append("\n"); 
+		query.append(",	ERR_DESC" ).append("\n"); 
+		query.append(",	ERR_MSG" ).append("\n"); 
+		query.append(",	ERR_LVL_CD" ).append("\n"); 
+		query.append(",	ERR_TP_CD" ).append("\n"); 
+		query.append(",	LANG_TP_CD" ).append("\n"); 
+		query.append(",	ERR_MSG_CD" ).append("\n"); 
+		query.append("FROM COM_ERR_MSG" ).append("\n"); 
+		query.append("WHERE 1=1" ).append("\n"); 
 		query.append("#if (${err_msg_cd} != '') " ).append("\n"); 
-		query.append("AND   err_msg_cd LIKE '%'||@[err_msg_cd]||'%'" ).append("\n"); 
+		query.append("AND  ERR_MSG_CD LIKE '%'||@[err_msg_cd]||'%'" ).append("\n"); 
 		query.append("#end" ).append("\n"); 
 		query.append("#if (${err_msg} != '') " ).append("\n"); 
-		query.append("and	UPPER(err_msg) like '%'||UPPER(@[err_msg])|| '%'" ).append("\n"); 
+		query.append("and	ERR_MSG like '%'||@[err_msg]|| '%'" ).append("\n"); 
 		query.append("#end" ).append("\n"); 
 
 	}

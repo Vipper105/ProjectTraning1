@@ -1,30 +1,29 @@
 /*=========================================================
-*Copyright(c) 2009 CyberLogitec
-*@FileName : ErrorMessageDAOComErrMsgVOCSQL.java
+*Copyright(c) 2022 CyberLogitec
+*@FileName : ErrorMsgManagermentDBDAOErrMsgVOCSQL.java
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2009.09.23
+*@LastModifyDate : 2022.05.18
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2009.09.23 
+* 2022.05.18 
 * 1.0 Creation
 =========================================================*/
-package com.clt.syscommon.management.opus.errormessage.integration;
+package com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.integration;
 
 import java.util.HashMap;
 import org.apache.log4j.Logger;
-
 import com.clt.framework.support.db.ISQLTemplate;
 
 /**
  *
- * @author 
+ * @author dinhhuy
  * @see DAO 참조
  * @since J2EE 1.6
  */
 
-public class ErrorMessageDAOComErrMsgVOCSQL implements ISQLTemplate{
+public class ErrorMsgManagermentDBDAOErrMsgVOCSQL implements ISQLTemplate{
 
 	private StringBuffer query = new StringBuffer();
 	
@@ -38,7 +37,7 @@ public class ErrorMessageDAOComErrMsgVOCSQL implements ISQLTemplate{
 	  *    
 	  * </pre>
 	  */
-	public ErrorMessageDAOComErrMsgVOCSQL(){
+	public ErrorMsgManagermentDBDAOErrMsgVOCSQL(){
 		setQuery();
 		params = new HashMap<String,String[]>();
 		String tmp = null;
@@ -93,8 +92,8 @@ public class ErrorMessageDAOComErrMsgVOCSQL implements ISQLTemplate{
 		params.put("cre_usr_id",new String[]{arrTmp[0],arrTmp[1]});
 
 		query.append("/*").append("\n"); 
-		query.append("Path : com.clt.syscommon.management.opus.errormessage.integration").append("\n"); 
-		query.append("FileName : ErrorMessageDAOComErrMsgVOCSQL").append("\n"); 
+		query.append("Path : com.clt.apps.opus.esm.clv.errormanagementtraining.errormsgmanagerment.integration").append("\n"); 
+		query.append("FileName : ErrorMsgManagermentDBDAOErrMsgVOCSQL").append("\n"); 
 		query.append("*/").append("\n"); 
 	}
 	
@@ -110,28 +109,32 @@ public class ErrorMessageDAOComErrMsgVOCSQL implements ISQLTemplate{
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("INSERT INTO com_err_msg (" ).append("\n"); 
-		query.append("err_msg_cd                                        ," ).append("\n"); 
-		query.append("lang_tp_cd                                        ," ).append("\n"); 
-		query.append("err_lvl_cd                                         ," ).append("\n"); 
-		query.append("err_tp_cd                                         ," ).append("\n"); 
-		query.append("err_msg                                           ," ).append("\n"); 
-		query.append("err_desc                                          ," ).append("\n"); 
-		query.append("cre_usr_id                                        ," ).append("\n"); 
-		query.append("cre_dt                                            ," ).append("\n"); 
-		query.append("upd_usr_id                                        ," ).append("\n"); 
-		query.append("upd_dt" ).append("\n"); 
-		query.append(") VALUES (" ).append("\n"); 
-		query.append("@[err_msg_cd]                                                 ," ).append("\n"); 
-		query.append("'ENG'                                                 ," ).append("\n"); 
-		query.append("@[err_lvl_cd]                                                 ," ).append("\n"); 
-		query.append("@[err_tp_cd]                                                 ," ).append("\n"); 
-		query.append("@[err_msg]                                                 ," ).append("\n"); 
-		query.append("@[err_desc]                                                 ," ).append("\n"); 
-		query.append("@[cre_usr_id]                                                 ," ).append("\n"); 
-		query.append("sysdate                                           ," ).append("\n"); 
-		query.append("@[upd_usr_id]                                                 ," ).append("\n"); 
-		query.append("sysdate" ).append("\n"); 
+		query.append("INSERT INTO COM_ERR_MSG(" ).append("\n"); 
+		query.append("ERR_MSG_CD" ).append("\n"); 
+		query.append(",LANG_TP_CD" ).append("\n"); 
+		query.append(",ERR_TP_CD" ).append("\n"); 
+		query.append(",ERR_LVL_CD" ).append("\n"); 
+		query.append(",ERR_MSG" ).append("\n"); 
+		query.append(",ERR_DESC" ).append("\n"); 
+		query.append(",CRE_USR_ID" ).append("\n"); 
+		query.append(",CRE_DT" ).append("\n"); 
+		query.append(",UPD_USR_ID" ).append("\n"); 
+		query.append(",UPD_DT" ).append("\n"); 
+		query.append(",EDW_UPD_DT " ).append("\n"); 
+		query.append(")" ).append("\n"); 
+		query.append("VALUES " ).append("\n"); 
+		query.append("( " ).append("\n"); 
+		query.append("@[err_msg_cd]," ).append("\n"); 
+		query.append("'ENG'," ).append("\n"); 
+		query.append("@[err_tp_cd]," ).append("\n"); 
+		query.append("@[err_lvl_cd]," ).append("\n"); 
+		query.append("@[err_msg]," ).append("\n"); 
+		query.append("@[err_desc]," ).append("\n"); 
+		query.append("@[cre_usr_id]," ).append("\n"); 
+		query.append("sysdate," ).append("\n"); 
+		query.append("@[upd_usr_id]," ).append("\n"); 
+		query.append("SYSDATE," ).append("\n"); 
+		query.append("SYSDATE" ).append("\n"); 
 		query.append(")" ).append("\n"); 
 
 	}
