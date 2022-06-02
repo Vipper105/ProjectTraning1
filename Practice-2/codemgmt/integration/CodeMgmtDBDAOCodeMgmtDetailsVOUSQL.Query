@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CodeMgmtDBDAOCodeMgmtDetailsVOUSQL">
+			<desc><![CDATA[a]]></desc>
+			<sql><![CDATA[
+UPDATE COM_INTG_CD_DTL SET 
+	UPD_DT= SYSDATE
+,	UPD_USR_ID = @[upd_usr_id]
+,	CRE_DT = SYSDATE
+,	CRE_USR_ID = @[cre_usr_id]
+,	APLY_END_DT = SYSDATE
+,	APLY_ST_DT = SYSDATE
+,	INTG_CD_VAL_DP_SEQ = @[intg_cd_val_dp_seq]
+,	INTG_CD_VAL_DESC = @[intg_cd_val_desc]
+,	INTG_CD_VAL_DP_DESC = @[intg_cd_val_dp_desc]
+,	INTG_CD_VAL_CTNT = @[intg_cd_val_ctnt]
+,	INTG_CD_ID = @[intg_cd_id]
+WHERE	INTG_CD_ID = @[intg_cd_id]
+			]]></sql>
+			<params>
+				<param name="upd_usr_id" type="12" value="" out="Y"/>
+				<param name="cre_usr_id" type="12" value="" out="Y"/>
+				<param name="intg_cd_val_dp_seq" type="12" value="" out="Y"/>
+				<param name="intg_cd_val_desc" type="12" value="" out="Y"/>
+				<param name="intg_cd_val_dp_desc" type="12" value="" out="Y"/>
+				<param name="intg_cd_val_ctnt" type="12" value="" out="Y"/>
+				<param name="intg_cd_id" type="12" value="" out="Y"/>
+			</params>
+		</query>
+	</querys>
+</sqls>
