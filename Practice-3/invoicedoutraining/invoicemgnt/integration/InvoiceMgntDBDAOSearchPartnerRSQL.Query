@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="InvoiceMgntDBDAOSearchPartnerRSQL">
+			<desc><![CDATA[a]]></desc>
+			<sql><![CDATA[
+SELECT 
+	DISTINCT(JO_CRR_CD)
+FROM JOO_CARRIER
+ORDER BY JO_CRR_CD			]]></sql>
+			<params>
+			</params>
+		</query>
+	</querys>
+</sqls>
