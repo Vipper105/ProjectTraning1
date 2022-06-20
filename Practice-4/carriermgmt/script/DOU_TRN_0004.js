@@ -204,33 +204,18 @@
     function setComboObject(combo_obj) {
         comboObjects[comboCnt++] = combo_obj;
     }
-
-    // ↑ ===========================================    Set array for components   ==========================================
     
-    /**
-     * Insert items into combobox
-     * @param comboObj
-     * @param comboItems
-     * 
-     **/
-    function addComboItem(comboObj, comboItems) {
-        for (var i = 0; i < comboItems.length; i++) {
-            var comboItem = comboItems[i].split(",");
-            //NYK Modify 2014.10.21
-            if (comboItem.length == 1) {
-                comboObj.InsertItem(i, comboItem[0], comboItem[0]);
-            } else {
-                comboObj.InsertItem(i, comboItem[0] + "|" + comboItem[1], comboItem[1]);
-            }
-        }
-    }
-
     /**
      * adjust dimension of IBsheet following dimension of browser.
      * 
      */
+    
+ 
+    
+    // ↑ ===========================================    Set array for components   ==========================================
+    
     function resizeSheet() {
-        ComResizeSheet(sheetObjects[0]);
+    	ComResizeSheet(sheetObjects[0]);
     }
 
     /**
@@ -291,6 +276,25 @@
         }
 
     }
+  //↓ ===========================================    Generate combobox   ==========================================
+    
+    /**
+     * Insert items into combobox
+     * @param comboObj
+     * @param comboItems
+     * 
+     **/
+    function addComboItem(comboObj, comboItems) {
+        for (var i = 0; i < comboItems.length; i++) {
+            var comboItem = comboItems[i].split(",");
+            //NYK Modify 2014.10.21
+            if (comboItem.length == 1) {
+                comboObj.InsertItem(i, comboItem[0], comboItem[0]);
+            } else {
+                comboObj.InsertItem(i, comboItem[0] + "|" + comboItem[1], comboItem[1]);
+            }
+        }
+    }
     
     /**
      * Combo Initialization 
@@ -337,6 +341,8 @@
         comboObj.SetItemCheck(0, true);
     }
     
+    // ↑ ===========================================    Generate combobox   ==========================================
+    
     /**
      * Event for reset function
      * 
@@ -345,12 +351,7 @@
     function resetForm(formObj) {
         sheetObjects[0].RemoveAll();
         formObj.reset();
-//        s_carrier.SetSelectIndex(0);
-    }
-    
-  //↓ ===========================================    Generate combobox   ==========================================
-    
- // ↑ ===========================================    Generate combobox   ==========================================
+    }    
     
     /**
      * Handling event when sheet change
@@ -366,7 +367,8 @@
     	var formObj=document.form ;
     	var colName=sheetObj.ColSaveName(Col);
     	
-    	if(colName == "rlane_cd"){//check exist trade code
+    	//check exist lane code
+    	if(colName == "rlane_cd"){
     		formObj.f_cmd.value     = COMMAND05;
     		var sParam              = FormQueryString(formObj) + "&rlane_cd=" + Value;
     		var sXml                = sheetObj.GetSearchData("DOU_TRN_0004GS.do", sParam, {sync:1});
@@ -379,6 +381,7 @@
     		}
     	}
 
+    	//check dup;icate joo carreer and lane code
     	if(colName == "jo_crr_cd" || colName == "rlane_cd"){
     		if(sheetObj.GetCellValue(Row,"jo_crr_cd") != "" && sheetObj.GetCellValue(Row,"rlane_cd") != ""){
     			if(sheetObj.ColValueDup("jo_crr_cd|rlane_cd") > -1){
@@ -400,7 +403,8 @@
     		}
     	}
     	
-    	if(colName == "vndr_seq"){//check exist vendor code
+    	//check exist vendor code
+    	if(colName == "vndr_seq"){
     		formObj.f_cmd.value		= COMMAND02;
     		var sParam				= FormQueryString(formObj) + "&vndr_seq=" + Value;
     		var sXml 				= sheetObj.GetSearchData("DOU_TRN_0004GS.do", sParam, {sync:1});	
@@ -412,7 +416,8 @@
     		}
     	}
     	
-    	if(colName == "trd_cd"){//check exist trade code
+    	//check exist trade code
+    	if(colName == "trd_cd"){
     		formObj.f_cmd.value     = COMMAND04;
     		var sParam              = FormQueryString(formObj) + "&trd_cd=" + Value;
     		var sXml                = sheetObj.GetSearchData("DOU_TRN_0004GS.do", sParam, {sync:1});
@@ -424,25 +429,13 @@
     		}
     	}
     	
-//    	if(colName == "rlane_cd"){//check exist trade code
-//    		formObj.f_cmd.value     = COMMAND05;
-//    		var sParam              = FormQueryString(formObj) + "&rlane_cd=" + Value;
-//    		var sXml                = sheetObj.GetSearchData("DOU_TRN_0004GS.do", sParam, {sync:1});
-//    		var flag                = ComGetEtcData(sXml, "ISEXIST");
-//    		if(flag == 'N'){
-//    			ComShowCodeMessage("COM130402", ["Lane"]);
-//    			sheetObj.SetCellValue(Row, Col, OldValue, 0);
-//    			sheetObj.SelectCell(Row, Col);
-//    		}
-//    	}
     }
     
     /**
      * Handle event
      * 
      */
-    function initControl(){
-    	
+    function initControl(){	
     	// Handle event for [Vendor] textfield
     	document.getElementById('s_vndr_seq').addEventListener('keypress',
     		function(){
@@ -464,7 +457,7 @@
     	case "cust_cnt_cd":
     	case "cust_seq":
     		ComOpenPopup('/opuscntr/CUSTOMER_POPUP.do', 900, 550, 'setCustCd', '1,0,1,1,1,1', true);
-//    		ComOpenPopup('/opuscntr/COM_ENS_041.do', 800, 500, 'setCustCd', '1,0,1,1,1,1', true);
+    		// ComOpenPopup('/opuscntr/COM_ENS_041.do', 800, 500, 'setCustCd', '1,0,1,1,1,1', true);
     		break;       
     	case "jo_crr_cd":
     		/**
@@ -492,6 +485,8 @@
    	
     	}	
     }
+    
+    // ↓ ===========================================    Set value for sheet from pop-up   ==========================================
     
     /**
      * Set value to customer code from pop-up
@@ -529,6 +524,7 @@
     	sheetObjects[0].SetCellValue(sheetObjects[0].GetSelectRow(), "jo_crr_cd", aryPopupData[0][3]);
     }
     
+    // ↑ ===========================================    Set value for sheet from pop-up   ==========================================
 
     /**
      * 
