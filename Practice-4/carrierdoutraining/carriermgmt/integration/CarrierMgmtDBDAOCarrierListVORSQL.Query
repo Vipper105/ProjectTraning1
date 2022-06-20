@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CarrierMgmtDBDAOCarrierListVORSQL">
+			<desc><![CDATA[a]]></desc>
+			<sql><![CDATA[
+select distinct(crr_cd) as jo_crr_cd
+from mdm_carrier
+where delt_flg = 'N'			]]></sql>
+			<params>
+			</params>
+		</query>
+	</querys>
+</sqls>

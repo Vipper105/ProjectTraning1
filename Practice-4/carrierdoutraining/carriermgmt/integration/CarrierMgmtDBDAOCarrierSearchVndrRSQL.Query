@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CarrierMgmtDBDAOCarrierSearchVndrRSQL">
+			<desc><![CDATA[a]]></desc>
+			<sql><![CDATA[
+select count(vndr_seq) 
+from mdm_vendor 
+where vndr_seq = @[vndr_seq]
+    and delt_flg = 'N'			]]></sql>
+			<params>
+				<param name="vndr_seq" type="12" value="" out="Y"/>
+			</params>
+		</query>
+	</querys>
+</sqls>

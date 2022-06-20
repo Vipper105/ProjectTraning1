@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CarrierMgntDBDAOCheckExistLaneRSQL">
+			<desc><![CDATA[a]]></desc>
+			<sql><![CDATA[
+select count(*) 
+from MDM_REV_LANE
+where  rlane_cd = @[rlane_cd]			]]></sql>
+			<params>
+				<param name="rlane_cd" type="12" value="" out="Y"/>
+			</params>
+		</query>
+	</querys>
+</sqls>

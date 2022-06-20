@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CarrierMgmtDBDAOSearchLaneVORSQL">
+			<desc><![CDATA[a]]></desc>
+			<sql><![CDATA[
+SELECT 
+	DISTINCT(vsl_slan_cd) as rlane_cd
+FROM MDM_REV_LANE
+where delt_flg = 'N'
+			]]></sql>
+			<params>
+			</params>
+		</query>
+	</querys>
+</sqls>
