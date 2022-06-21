@@ -41,7 +41,6 @@ function ESM_DOU_0108() {
 
 var sheetObjects = new Array();
 var sheetCnt = 0;
-var sheetCnt = 0;
 
 var comboObjects = new Array();
 var comboCnt = 0;
@@ -630,6 +629,9 @@ function getLaneComboData() {
     // var xml = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do",FormQueryString(document.form));
     let arr1 = new Array("sheet1_", "");
     let sParam1 = FormQueryString(formObj) + "&" + ComGetPrefixParam(arr1);
+    
+    // sParam1 = replaceStr(sParam1);
+    
     let sXml1 = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do", sParam1);
 
     lanes = ComGetEtcData(sXml1, "lanes");
@@ -675,15 +677,15 @@ function generateDataCombo(comboObj, dataStr) {
  * 
  */
 function s_partner_OnCheckClick(Index, Code, Checked) {   
+	let numComboPartner = s_partner.GetItemCount()
     if (Checked == 'ALL') {
-        let numComboPartner = s_partner.GetItemCount()
         for (let i = 1; i < numComboPartner - 1; i++) {
         	s_partner.SetItemCheck(i, false);
         }
         
         // get all Lane, because when initialize ALL is checked so that it's NOT get all lane 
         // => We need get all Lane when initilize
-        getLaneComboData();
+//        getLaneComboData();
         
         
     } else{
@@ -700,6 +702,10 @@ function s_partner_OnCheckClick(Index, Code, Checked) {
 
     let arr1 = new Array("sheet1_", "");
     let sParam1 = FormQueryString(formObj) + "&" + ComGetPrefixParam(arr1);
+    
+   // replace value when click ALL
+    // sParam1 = replaceStr(sParam1);
+    
     let sXml1 = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do", sParam1);
     if (sXml1.length > 0) {
         sheetObjects[0].LoadSearchData(sXml1, { Sync: 1 });
@@ -707,9 +713,33 @@ function s_partner_OnCheckClick(Index, Code, Checked) {
 
     s_lane.SetEnable(true);
     getLaneComboData();
+    
+ 
 }
 
 // ↑ ===========================================    Generate combobox   ==========================================
+
+function replaceStr(sParam1) {
+	//let sParamList[] = sParam1.split("&");
+	let findStr = 's_partner=ALL';
+//	for (let i = 0; i < sParamList.length; i++) {
+//		if (sParamList[i] == findStr) {
+//			
+//		}
+//	}
+//	let comboItems = partnersCombo.split("|");
+//	for(let i= 1 ;i<comboItems.length;i++){
+//		comboItems.get(i);
+//	}
+	
+	//let resultStr  = '';
+	if(sParam1.indexOf(findStr) > -1){
+		let comboItems = partnersCombo.replaceAll("|","%2");
+		resultStr = sParam1.replaceAll("ALL", comboItems);
+	}
+	
+	return resultStr;
+}
 
 
 // ↓ ===========================================    Handle event Onsearch End   ==========================================

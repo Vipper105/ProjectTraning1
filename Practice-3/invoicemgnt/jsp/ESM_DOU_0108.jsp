@@ -36,7 +36,6 @@
 	String strUsr_id		= "";
 	String strUsr_nm		= "";
 	String partners   		= "";
-	// String lanes			= "";
 	
 	Logger log = Logger.getLogger("com.clt.apps.InvoiceDouTraining.InvoiceMgnt");
 
@@ -57,7 +56,6 @@
 		GeneralEventResponse eventResponse = (GeneralEventResponse) request.getAttribute("EventResponse");
 		// get data for combobox partners
 		partners = eventResponse.getETCData("partners");
-		// lanes = eventResponse.getETCData("lanes");
 	}catch(Exception e) {
 		out.println(e.toString());
 	}
