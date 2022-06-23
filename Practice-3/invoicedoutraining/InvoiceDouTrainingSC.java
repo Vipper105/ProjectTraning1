@@ -12,6 +12,7 @@
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic.InvoiceMgntBC;
@@ -19,8 +20,8 @@ import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic.InvoiceMgn
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.event.EsmDou0108Event;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration.InvoiceMgntDBDAO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
+import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.component.message.ErrorHandler;
 import com.clt.framework.core.layer.event.Event;
 import com.clt.framework.core.layer.event.EventException;
@@ -78,7 +79,7 @@ public class InvoiceDouTrainingSC extends ServiceCommandSupport {
 		EventResponse eventResponse = null;
 
 		// SC가 여러 이벤트를 처리하는 경우 사용해야 할 부분
-		if (e.getEventName().equalsIgnoreCase("EsmDou0108Event")) {
+		if ("EsmDou0108Event".equalsIgnoreCase(e.getEventName())) {
 			if (e.getFormCommand().isCommand(FormCommand.DEFAULT)) {
 				eventResponse = initData(e);
 			}
@@ -97,6 +98,10 @@ public class InvoiceDouTrainingSC extends ServiceCommandSupport {
 			
 			else if (e.getFormCommand().isCommand(FormCommand.SEARCH04)) {
 				eventResponse = searchTrade(e);
+			}
+			
+			else if (e.getFormCommand().isCommand(FormCommand.COMMAND01)) {
+				eventResponse = excelDownloadFromServer(e);
 			}
 		}
 		return eventResponse;
@@ -256,4 +261,17 @@ public class InvoiceDouTrainingSC extends ServiceCommandSupport {
 		return eventResponse;
 	}
 	
+	private EventResponse excelDownloadFromServer(Event e) throws EventException {
+		InvoiceMgntBC command = new InvoiceMgntBCImpl();
+		EsmDou0108Event event = (EsmDou0108Event)e;
+		GeneralEventResponse eventResponse = new GeneralEventResponse();
+		SummaryVO joo = event.getSummaryVO();
+		
+		eventResponse.setCustomData("vos", command.searchSummaryVO(event.getSummaryVO()));
+		eventResponse.setCustomData("title", joo.getColumn());
+		eventResponse.setCustomData("columns",joo.getColumn());
+		eventResponse.setCustomData("fileName", "downLoadExcel2.xls");
+		eventResponse.setCustomData("isZip", false);
+		return eventResponse;
+	}
 }

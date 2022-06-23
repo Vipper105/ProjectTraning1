@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -584,5 +585,29 @@ public class SummaryVO extends AbstractValueObject {
 		this.acctYrmonTo = this.acctYrmonTo .replaceAll(",", "").replaceAll("-", "").replaceAll("/", "").replaceAll(":", "");
 		this.prnrRefNo = this.prnrRefNo .replaceAll(",", "").replaceAll("-", "").replaceAll("/", "").replaceAll(":", "");
 		this.aproFlg = this.aproFlg .replaceAll(",", "").replaceAll("-", "").replaceAll("/", "").replaceAll(":", "");
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public  String[] getColumn(){
+		List<String> col = new ArrayList<String>();
+		col.add("csr_no");
+		col.add("inv_rev_act_amt");
+		col.add("locl_curr_cd");
+		col.add("cust_vndr_seq");
+		col.add("jo_crr_cd");
+		col.add("rlane_cd");
+		col.add("cust_vndr_cnt_cd");
+		col.add("inv_no");
+		col.add("pagerows");
+		col.add("cust_vndr_eng_nm");
+		col.add("ibflag");
+		col.add("prnr_ref_no");
+		col.add("inv_exp_act_amt");
+		col.add("apro_flg");
+		
+		return col.toArray(new String[0]);
 	}
 }

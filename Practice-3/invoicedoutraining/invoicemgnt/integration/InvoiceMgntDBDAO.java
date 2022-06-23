@@ -63,13 +63,7 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 			
 				List<String> obj_list_no = new ArrayList<>();
 				
-				if(summaryVO.getJoCrrCd() != null){
-					
-//					if(summaryVO.getJoCrrCd().equals("ALL")){
-//						
-//					}
-					
-					
+				if(summaryVO.getJoCrrCd() != null){			
 					String[] crr_cd = summaryVO.getJoCrrCd().split(",");
 					if(crr_cd.length > 0){
 						for(int i=0;i<crr_cd.length;i++){
@@ -77,8 +71,7 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 						}
 					}
 				}
-				
-				
+		
 				param.putAll(mapVO);
 				param.put("obj_list_no",obj_list_no);
 				velParam.putAll(mapVO);
@@ -96,42 +89,41 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 		return list;
 	}
 	 
-	 
-	 
-		/**
-		 * [처리대상] 정보를 [행위] 합니다.<br>
-		 * 
-		 * @param JooCarrierVO jooCarrierVO
-		 * @return List<JooCarrierVO>
-		 * @exception DAOException
-		 */
-		 @SuppressWarnings("unchecked")
-		public List<DetailsVO> searchDetailsVO(DetailsVO detailsVO) throws DAOException {
-			DBRowSet dbRowset = null;
-			List<DetailsVO> list = null;
-			//query parameter
-			Map<String, Object> param = new HashMap<String, Object>();
-			//velocity parameter
-			Map<String, Object> velParam = new HashMap<String, Object>();
 
-			try{
-				if(detailsVO != null){
-					Map<String, String> mapVO = detailsVO .getColumnValues();
-				
-					param.putAll(mapVO);
-					velParam.putAll(mapVO);
-				}
-				dbRowset = new SQLExecuter("").executeQuery((ISQLTemplate)new InvoiceMgntDBDAODetailsVORSQL(), param, velParam);
-				list = (List)RowSetUtil.rowSetToVOs(dbRowset, DetailsVO .class);
-			} catch(SQLException se) {
-				log.error(se.getMessage(),se);
-				throw new DAOException(new ErrorHandler(se).getMessage());
-			} catch(Exception ex) {
-				log.error(ex.getMessage(),ex);
-				throw new DAOException(new ErrorHandler(ex).getMessage());
+	/**
+	 * [처리대상] 정보를 [행위] 합니다.<br>
+	 * 
+	 * @param JooCarrierVO jooCarrierVO
+	 * @return List<JooCarrierVO>
+	 * @exception DAOException
+	 */
+	 @SuppressWarnings("unchecked")
+	public List<DetailsVO> searchDetailsVO(DetailsVO detailsVO) throws DAOException {
+		DBRowSet dbRowset = null;
+		List<DetailsVO> list = null;
+		//query parameter
+		Map<String, Object> param = new HashMap<String, Object>();
+		//velocity parameter
+		Map<String, Object> velParam = new HashMap<String, Object>();
+
+		try{
+			if(detailsVO != null){
+				Map<String, String> mapVO = detailsVO .getColumnValues();
+			
+				param.putAll(mapVO);
+				velParam.putAll(mapVO);
 			}
-			return list;
-		 }
+			dbRowset = new SQLExecuter("").executeQuery((ISQLTemplate)new InvoiceMgntDBDAODetailsVORSQL(), param, velParam);
+			list = (List)RowSetUtil.rowSetToVOs(dbRowset, DetailsVO .class);
+		} catch(SQLException se) {
+			log.error(se.getMessage(),se);
+			throw new DAOException(new ErrorHandler(se).getMessage());
+		} catch(Exception ex) {
+			log.error(ex.getMessage(),ex);
+			throw new DAOException(new ErrorHandler(ex).getMessage());
+		}
+		return list;
+	 }
 
 	/**
 	 * [처리대상] 정보를 [행위] 합니다.<br>

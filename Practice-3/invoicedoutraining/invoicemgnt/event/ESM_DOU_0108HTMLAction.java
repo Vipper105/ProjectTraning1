@@ -91,8 +91,14 @@ public class ESM_DOU_0108HTMLAction extends HTMLActionSupport {
 			event.setSummaryVO(jooCarrierVO);
 		}
 		
-		else if(command.isCommand(FormCommand.SEARCH05)) {
-			event.setSummaryVO((SummaryVO)getVO(request, SummaryVO .class, "sheet1_"));	
+		else if(command.isCommand(FormCommand.COMMAND01)) {
+			SummaryVO summaryVO = new SummaryVO();
+			summaryVO.setAcctYrmonFr(JSPUtil.getParameter(request, "acct_yrmon_from", ""));
+			summaryVO.setAcctYrmonTo(JSPUtil.getParameter(request, "acct_yrmon_to", ""));
+			summaryVO.setTrdCd(JSPUtil.getParameter(request, "s_trade", ""));
+			summaryVO.setRlaneCd(JSPUtil.getParameter(request, "s_lane", ""));
+			summaryVO.setJoCrrCd(JSPUtil.getParameter(request, "s_partner", ""));
+			event.setSummaryVO(summaryVO);
 		}
 		
 		return  event;

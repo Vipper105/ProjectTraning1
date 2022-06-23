@@ -21,7 +21,7 @@ import com.clt.framework.support.db.ISQLTemplate;
 
 /**
  *
- * @author HuyDP
+ * @author dinhhuy
  * @see DAO 참조
  * @since J2EE 1.6
  */

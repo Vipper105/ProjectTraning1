@@ -36,6 +36,7 @@
 	String strUsr_id		= "";
 	String strUsr_nm		= "";
 	String partners   		= "";
+	// String lanes			= "";
 	
 	Logger log = Logger.getLogger("com.clt.apps.InvoiceDouTraining.InvoiceMgnt");
 
@@ -56,10 +57,12 @@
 		GeneralEventResponse eventResponse = (GeneralEventResponse) request.getAttribute("EventResponse");
 		// get data for combobox partners
 		partners = eventResponse.getETCData("partners");
+		// lanes = eventResponse.getETCData("lanes");
 	}catch(Exception e) {
 		out.println(e.toString());
 	}
 %>
+
 <head>
 <title>Invoice Management</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -83,51 +86,58 @@ var partnersCombo = "ALL|<%=partners%>";
 <!-- 개발자 작업	-->
 
 <div class="page_title_area clear">
-	
+		<div class="opus_design_btn">
+			<button class="btn_accent" name="btn_Retrieve" id="btn_Retrieve" type="button">Retrieve</button><!--
+			--><button class="btn_accent" name="btn_New" id="btn_New" type="button">New</button><!--
+			--><button class="btn_accent" name="btn_DownExcel" id="btn_DownExcel" type="button">Down Excell</button><!--
+			--><button class="btn_accent" name="btn_Down" id="btn_Down" type="button">Down</button>			
+		</div>
+		
+		<div class="location">	
+			<span id="navigation"></span>
+		</div>
 </div>
 
 
 
-<div class="wrap_search">
+<div class="wrap_search_tab">
 		
-		<div class="opus_design_inquiry">
-		    <table>
+		<div class="opus_design_inquiry wFit">
+		    <table class="search">
 		     	<colgroup>
+		     	
 					<col width="100" />				
-					<col width="100" />						
-					<col width="70" />	
-					<col width="100" />				
-					<col width="70" />					
-					<col width="10" />
-					<col width="10" />
-					<col width="10" />
-					<col width="100" />		
+					<col width="0" />						
+					<col width="100" />	
+					<col width="0" />
+					<col width="50" />
+					<col width="0" />
+					<col width="50" />
+					<col width="*" />
+				
+									
+					
 							
 			   </colgroup> 
 		        <tbody>
 				<tr>
 					<th>Year month</th>
-				 	<td style="width: 563px; ">
-					 	<input class="input" style="width: 120px;" type="text" id="acct_yrmon_from" name="acct_yrmon_from" value=""><!--
+				 	<td style="width: 350px; ">
+					 	<input class="input" style="width: 80px;text-align:center;background-color:#C7E4FA;" type="text" id="acct_yrmon_from" name="acct_yrmon_from" value=""><!--
 					 	--><button class="btn_left" name="btn_datefrom_down" id="btn_datefrom_down" type="button"></button><!--
 					 	--><button class="btn_right" name="btn_datefrom_up" id="btn_datefrom_up" type="button"></button><!--
-					 	--><input class="input" style="width: 120px;" type="text" id="acct_yrmon_to" name="acct_yrmon_to" value=""><!--
+					 	--><input class="input" style="width: 80px;text-align:center;background-color:#C7E4FA;" type="text" id="acct_yrmon_to" name="acct_yrmon_to" value=""><!--
 					 	--><button class="btn_left" name="btn_dateto_down" id="btn_dateto_down" type="button"></button><!--
 					 	--><button class="btn_right" name="btn_dateto_up" id="btn_dateto_up" type="button"></button>
 						
 					</td>
 					<th>Partner</th>
-					<td><script type="text/javascript">ComComboObject('s_partner',-1,80);</script></td>
+					<td><script type="text/javascript">ComComboObject('s_partner', 1, 80, 1, 0, 0);</script></td>
 				   	<th>Lane</th>
-					<td><script type="text/javascript">ComComboObject('s_lane',-1,80);</script></td>
+					<td><script type="text/javascript">ComComboObject('s_lane', 1, 80, 1, 0, 0);</script></td>
 					<th>Trade</th>
-					<td><script type="text/javascript">ComComboObject('s_trade',-1,80);</script></td>
-					<td>
-						<button class="btn_accent" name="btn_Retrieve" id="btn_Retrieve" type="button">Retrieve</button><!--
-						--><button class="btn_accent" name="btn_New" id="btn_New" type="button">New</button><!--
-						--><button class="btn_accent" name="btn_DownExcel" id="btn_DownExcel" type="button">Down Excell</button><!--
-						--><button class="btn_accent" name="btn_Down" id="btn_Down" type="button">Down</button>			
-					</td>
+					<td><script type="text/javascript">ComComboObject('s_trade', 1, 80, 1, 0, 0);</script></td>
+				
 				</tr>
 				</tbody>
 			</table>
@@ -141,12 +151,12 @@ var partnersCombo = "ALL|<%=partners%>";
 	<div class="opus_design_tab">
 			<script type="text/javascript">ComTabObject('tab1')</script>
 		</div>
-		<div class="opus_design_grid clear" name="tabLayer" id="tabLayer">
+		<div class="opus_design_grid wFit" name="tabLayer" id="tabLayer">
 			<h3 class="title_design">Summary</h3>
 			<script language="javascript">ComSheetObject('sheetSummary');</script>
 		</div>
 		
-		<div class="opus_design_grid clear" name="tabLayer" id="tabLayer">
+		<div class="opus_design_grid wFit" name="tabLayer" id="tabLayer">
 			<h3 class="title_design">Details</h3>
 			<script language="javascript">ComSheetObject('sheetDetails');</script>
 		</div>

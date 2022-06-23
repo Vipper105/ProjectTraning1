@@ -22,20 +22,6 @@
   * @author 한진해운
   */
 
-/**
- * @extends 
- * @class ESM_DOU_0108 : ESM_DOU_0108 생성을 위한 화면에서 사용하는 업무 스크립트를 정의한다.
- */
-function ESM_DOU_0108() {
-    this.processButtonClick = tprocessButtonClick;
-    this.setSheetObject = setSheetObject;
-    this.loadPage = loadPage;
-    this.initSheet = initSheet;
-    this.initControl = initControl;
-    this.doActionIBSheet = doActionIBSheet;
-    this.setTabObject = setTabObject;
-    this.validateForm = validateForm;
-}
 
 /* 개발자 작업	*/
 
@@ -79,12 +65,11 @@ function loadPage() {
 
     // Initialize periods
     initPeriod();
-    
-
+   
     // Show data when loading page
-    for(var j=0; j < sheetObjects.length; j++){
-    	doActionIBSheet(sheetObjects[j], document.form, IBSEARCH);   	
-    }
+//    for(var j=0; j < sheetObjects.length; j++){
+//    	doActionIBSheet(sheetObjects[j], document.form, IBSEARCH);   	
+//    }
  
 }
 
@@ -96,6 +81,7 @@ function processButtonClick() {
 
     var sheetObject1 = sheetObjects[0];
     var sheetObject2 = sheetObjects[1];
+    var sheetObject = getCurrentSheet();
     var formObj = document.form;
 
 
@@ -129,20 +115,25 @@ function processButtonClick() {
                 break;
 
             case "btn_Retrieve":
+            	// check missing search option
+            	if(!isMissingSearchOption()){
+            		// check if over three month
+            		if (isOverThreeMonth()) {
+            			if (!isOK) {
+            				if (confirm("Year Month over 3 months, do you realy want to get data?")) {
+//                            return;
+            					isOK = true;
+            				} else {
+            					isOK = false;
+            					return;
+            				}
+            			}
+            		}            		
+            	}else{
+            		return;
+            	}
 
-                // check if over three month
-                if (isOverThreeMonth()) {
-                    if (!isOK) {
-                        if (confirm("Year Month over 3 months, do you realy want to get data?")) {
-                            return;
-                        } else {
-                            isOK = true;
-                        }
-                    }
-                }
-
-                doActionIBSheet(sheetObject1, formObj, IBSEARCH);
-                doActionIBSheet(sheetObject2, formObj, IBSEARCH);
+                doActionIBSheet(sheetObject, formObj, IBSEARCH);
                 break;
 
             case "btn_New":
@@ -153,7 +144,7 @@ function processButtonClick() {
                 doActionIBSheet(sheetObject1, formObj, IBDOWNEXCEL);
                 break;
             case "btn_Down":
-            	doActionIBSheet(sheetObject1, formObj, IBDOWNEXCEL);
+            	doActionIBSheet(sheetObject1, formObj, IBDOWNEXCEL2);
                 break;
 
         }
@@ -392,8 +383,11 @@ function addComboItem(comboObj, comboItems) {
  * 
  */
 function resizeSheet() {
-    ComResizeSheet(sheetObjects[0]);
-    ComResizeSheet(sheetObjects[1]);
+	if(beforetab == 0){
+        ComResizeSheet(sheetObjects[0]);
+    }else{
+        ComResizeSheet(sheetObjects[1]);
+    }
 }
 
 /**
@@ -409,7 +403,7 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
     switch (sAction) {
         case IBSEARCH:
             if (sheetObj.id == "sheetSummary") {
-                // ComOpenWait(true);
+                ComOpenWait(true);
                 formObj.f_cmd.value = SEARCH;
 
                 let arr1 = new Array("sheet1_", "");
@@ -421,7 +415,7 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
             }
 
             else if (sheetObj.id == "sheetDetails") {
-                // ComOpenWait(true);
+                ComOpenWait(true);
                 formObj.f_cmd.value = SEARCH02;
                 let arr2 = new Array("sheet2_", "");
                 let sParam2 = FormQueryString(formObj) + "&" + ComGetPrefixParam(arr2);
@@ -447,8 +441,108 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
             }
 
             break;
+            
+        case IBDOWNEXCEL2: //삭제
+    		if (sheetObj.id == "sheetSummary") {
+    			formObj.f_cmd.value = COMMAND01;
+//    			formObj.target="ExcelDownloadGS.do";
+    			formObj.target="ESM_DOU_0108GS.do";
+    			formObj.submit();
+//    			sheetObj.GetSearchXml("ExcelDownloadGS.do", sheetObj
+//    					.GetSaveString()
+//    					+ "&" + FormQueryString(formObj));
+    		}
+    		break;
+    	
     }
 
+}
+
+/**
+ * Get current sheet
+ * 
+ */
+function getCurrentSheet(){
+    var sheetObj=null;
+    if(beforetab == 0){
+        sheetObj=sheetObjects[0];
+    }else{
+        sheetObj=sheetObjects[1];
+    }
+    
+    return sheetObj;
+}
+
+/**
+ * validate whether if any item is missing
+ * 
+ */
+function isMissingSearchOption(){
+	/*
+	 * result[0] : missing item name
+	 * result[1] : is missing search option
+	 */
+	let result = valueMissOpt();
+	let itemOpt = result[0];
+	let isMissOpt = result[1];
+	
+	let errMsg = "You have input for all searching options.";
+	if(isMissOpt){
+		ComShowMessage(errMsg);
+		document.getElementById(itemOpt).focus();
+//		comboObjects[1].Focus();
+//		comboObjects[1].DisplayDropDownList(true);
+//		itemOpt.DisplayDropDownList(true);
+		return true;
+	}			
+
+	return false;
+	
+}
+
+function valueMissOpt(){
+	
+	let formObj = document.form;
+	let fromDate = formObj.acct_yrmon_from.value;
+	let toDate = formObj.acct_yrmon_to.value;
+	let s_partner = document.getElementById("s_partner").value;
+	let s_lane = document.getElementById("s_lane").value;
+	let s_trade = document.getElementById("s_trade").value;
+
+	let missOption = [];
+	let missItem = '';
+	
+	if(fromDate.length == 0){
+		missItem = 'fromDate';
+		pushMissOpt(missOption, missItem, true);
+	}
+	
+	else if(toDate.length == 0){
+		missItem = 'toDate';	
+		pushMissOpt(missOption, missItem, true);
+	}
+	
+	else if(s_partner.length == 0){
+		missItem = 's_partner'; 
+		pushMissOpt(missOption, missItem, true);
+	}
+	
+	else if(s_lane.length == 0){
+		missItem = 's_lane';
+		pushMissOpt(missOption, missItem, true);
+	}
+	
+	else if(s_trade.length == 0){
+		missItem = 's_trade';	
+		pushMissOpt(missOption, missItem, true);
+	}
+
+	return missOption;
+} 
+
+function pushMissOpt(missOption, missItem, isMissOpt){
+	missOption.push(missItem);
+	missOption.push(isMissOpt);
 }
 
 /**
@@ -465,8 +559,8 @@ function isOverThreeMonth() {
     }
 
     return false;
-
 }
+
 
 // ================      handle event tab  ==================
 
@@ -522,6 +616,7 @@ function s_lane_OnChange() {
 function yearmonth_onchange() {
     sheetObjects[0].RemoveAll();
     sheetObjects[1].RemoveAll();
+    isOK = false;
 }
 
 // ↓ ===========================================    Create Date combobox    ==========================================
@@ -614,7 +709,6 @@ function sheetSummary_OnDblClick(sheetObj, Row, Col) {
     tabObjects[0].SetSelectedIndex(1);
 }
 
-
 //↓ ===========================================    Generate combobox   ==========================================
 
 /**
@@ -633,8 +727,8 @@ function getLaneComboData() {
     // sParam1 = replaceStr(sParam1);
     
     let sXml1 = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do", sParam1);
-
     lanes = ComGetEtcData(sXml1, "lanes");
+    
     generateDataCombo(comboObjects[1], lanes);	 
 }
 
@@ -676,42 +770,32 @@ function generateDataCombo(comboObj, dataStr) {
  * Event when click on items of combobox Partner
  * 
  */
-function s_partner_OnCheckClick(Index, Code, Checked) {   
+function s_partner_OnCheckClick(Index, Code, Checked) { 
 	let numComboPartner = s_partner.GetItemCount()
     if (Checked == 'ALL') {
         for (let i = 1; i < numComboPartner - 1; i++) {
         	s_partner.SetItemCheck(i, false);
-        }
-        
-        // get all Lane, because when initialize ALL is checked so that it's NOT get all lane 
-        // => We need get all Lane when initilize
-//        getLaneComboData();
-        
-        
+        }         
+        s_lane.RemoveAll();
+ 		s_trade.RemoveAll();
+ 		s_lane.SetEnable(false);
+ 		s_trade.SetEnable(false);
     } else{
     	let isChecked = s_partner.GetItemCheck(Code);
     	if(isChecked){
     		s_partner.SetItemCheck('ALL', false); 
-    		s_partner.SetItemCheck(Code, true); 
+    		s_partner.SetItemCheck(Code, true, 0 ); 
+    		s_lane.SetEnable(true);
     	}
+    	
+    	s_lane.RemoveAll();
+ 		s_trade.RemoveAll();
+ 		
+ 		// Search combobox Partner
+ 	   doActionIBSheet(sheetObjects[0], document.form, IBSEARCH);   	
+ 	   doActionIBSheet(sheetObjects[1], document.form, IBSEARCH);   	
     }
 
-    // Search combobox Partner
-    var formObj = document.form;
-    formObj.f_cmd.value = SEARCH;
-
-    let arr1 = new Array("sheet1_", "");
-    let sParam1 = FormQueryString(formObj) + "&" + ComGetPrefixParam(arr1);
-    
-   // replace value when click ALL
-    // sParam1 = replaceStr(sParam1);
-    
-    let sXml1 = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do", sParam1);
-    if (sXml1.length > 0) {
-        sheetObjects[0].LoadSearchData(sXml1, { Sync: 1 });
-    }
-
-    s_lane.SetEnable(true);
     getLaneComboData();
     
  
@@ -719,28 +803,23 @@ function s_partner_OnCheckClick(Index, Code, Checked) {
 
 // ↑ ===========================================    Generate combobox   ==========================================
 
+/*
 function replaceStr(sParam1) {
 	//let sParamList[] = sParam1.split("&");
 	let findStr = 's_partner=ALL';
-//	for (let i = 0; i < sParamList.length; i++) {
-//		if (sParamList[i] == findStr) {
-//			
-//		}
-//	}
-//	let comboItems = partnersCombo.split("|");
-//	for(let i= 1 ;i<comboItems.length;i++){
-//		comboItems.get(i);
-//	}
 	
 	//let resultStr  = '';
 	if(sParam1.indexOf(findStr) > -1){
 		let comboItems = partnersCombo.replaceAll("|","%2");
+		comboItems = comboItems.replaceAll("ALL%", "");
 		resultStr = sParam1.replaceAll("ALL", comboItems);
+
 	}
 	
 	return resultStr;
 }
 
+*/
 
 // ↓ ===========================================    Handle event Onsearch End   ==========================================
 
@@ -790,6 +869,8 @@ function sheetDetails_OnSearchEnd(sheetObj, Code, Msg, StCode, StMsg) {
         }
     }
 }
+
+
 
 // ↑ ===========================================    Handle event Onsearch End   ==========================================
 
