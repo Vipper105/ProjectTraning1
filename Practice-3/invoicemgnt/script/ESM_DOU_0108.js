@@ -70,6 +70,7 @@ function loadPage() {
 //    for(var j=0; j < sheetObjects.length; j++){
 //    	doActionIBSheet(sheetObjects[j], document.form, IBSEARCH);   	
 //    }
+    doActionIBSheet(sheetObjects[0], document.form, IBSEARCH);
  
 }
 
@@ -429,6 +430,7 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
             break;
 
         case IBDOWNEXCEL:
+        	
             if (sheetObj.RowCount() < 1) {
                 ComShowCodeMessage("COM132501");
             } else {
@@ -437,7 +439,7 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
                 for (let i = 0; i < sheetObjects.length; i++) {
                     sheetObjects[i].Down2Excel({ FileName: "excel2", SheetName: "sheet" + (i + 1), DownCols: makeHiddenSkipCol(sheetObjects[i]), SheetDesign: 1, Merge: 1 });
                 }
-                sheetObjects[0].Down2ExcelBuffer(false);
+                sheetObjects[0].Down2ExcelBuffer(false);   
             }
 
             break;
@@ -698,15 +700,46 @@ function GetDateFormat(obj, sFormat) {
  * 
  **/
 function sheetSummary_OnDblClick(sheetObj, Row, Col) {
-    var dataRows = sheetSummary.GetSelectionRows(",");;
-    var inv_no = sheetObj.GetCellValue(Row, "sheet1_inv_no");
-    tab1_OnChange(tabObjects[0], 1);
-    
-    var x = sheetDetails.FindText(3, inv_no);
-    sheetObjects[1].SetSelectRow(x);
-    
-    // change to tab details
-    tabObjects[0].SetSelectedIndex(1);
+	if(sheetObjects[1].RowCount() == 0){
+		doActionIBSheet(sheetObjects[1],document.form,IBSEARCH);
+	}
+	
+	if(sheetObj.GetCellValue(Row,"jo_crr_cd")!=""){
+		var prefix = "sheet1_";
+		var prefix2 = "sheet2_";
+		var saveNames = ["jo_crr_cd", "rlane_cd", "inv_no", "csr_no", "locl_curr_cd", "prnr_ref_no"];
+		var summaryData=getDataRow(sheetSummary, Row, saveNames, prefix);
+		var size = sheetDetails.RowCount();
+		
+		// i starts equal 2 because i=0,1 is corresponding to title rows of sheet
+		for(var i= 2 ; i<=size ; i++){
+			// compare data of sheetSummary and sheetDetails
+			if(summaryData == getDataRow(sheetDetails, i, saveNames, prefix2)){
+				
+				tab1_OnChange(tabObjects[1], 1);
+				// select to [Details] tab
+				tabObjects[0].SetSelectedIndex(1);
+				sheetObjects[1].SetSelectRow(i);
+				return;
+			}
+		}
+		ComShowCodeMessage('COM132701');
+	}
+}
+
+/**
+ * This function is used to get data at row and append that data to string
+ * @param sheetObj: Sheet Object
+ * @param row: selected row
+ * @param saveNames: array of save name
+ * @returns data
+ */
+function getDataRow(sheetObj, row, saveNames, prefix){
+	var result= "";
+	for(var i= 0; i < saveNames.length; i++){
+		result += sheetObj.GetCellValue(row, prefix + saveNames[i]);
+	}
+	return result; 
 }
 
 //↓ ===========================================    Generate combobox   ==========================================
