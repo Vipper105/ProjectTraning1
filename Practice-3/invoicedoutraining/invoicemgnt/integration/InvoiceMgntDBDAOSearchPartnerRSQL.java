@@ -4,19 +4,16 @@
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2022.06.30
+*@LastModifyDate : 2022.07.04
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2022.06.30 
+* 2022.07.04 
 * 1.0 Creation
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration;
 
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
-
-import com.clt.framework.core.layer.integration.DAO;
 import com.clt.framework.support.db.ISQLTemplate;
 
 /**
@@ -61,9 +58,9 @@ public class InvoiceMgntDBDAOSearchPartnerRSQL implements ISQLTemplate{
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("SELECT " ).append("\n"); 
-		query.append("	DISTINCT(JO_CRR_CD)" ).append("\n"); 
+		query.append("SELECT JO_CRR_CD" ).append("\n"); 
 		query.append("FROM JOO_CARRIER" ).append("\n"); 
+		query.append("GROUP BY JO_CRR_CD" ).append("\n"); 
 		query.append("ORDER BY JO_CRR_CD" ).append("\n"); 
 
 	}

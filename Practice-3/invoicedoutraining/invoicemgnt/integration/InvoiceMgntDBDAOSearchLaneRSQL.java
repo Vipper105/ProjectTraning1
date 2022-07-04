@@ -4,19 +4,16 @@
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2022.06.30
+*@LastModifyDate : 2022.07.04
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2022.06.30 
+* 2022.07.04 
 * 1.0 Creation
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration;
 
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
-
-import com.clt.framework.core.layer.integration.DAO;
 import com.clt.framework.support.db.ISQLTemplate;
 
 /**
@@ -61,12 +58,12 @@ public class InvoiceMgntDBDAOSearchLaneRSQL implements ISQLTemplate{
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("SELECT " ).append("\n"); 
-		query.append("	distinct(rlane_cd)" ).append("\n"); 
+		query.append("SELECT rlane_cd" ).append("\n"); 
 		query.append("FROM joo_carrier" ).append("\n"); 
 		query.append("WHERE jo_crr_cd IN (" ).append("\n"); 
 		query.append("	#foreach($key IN ${obj_list_no}) #if($velocityCount < $obj_list_no.size()) '$key', #else '$key' #end #end" ).append("\n"); 
 		query.append(")" ).append("\n"); 
+		query.append("GROUP BY rlane_cd" ).append("\n"); 
 
 	}
 }

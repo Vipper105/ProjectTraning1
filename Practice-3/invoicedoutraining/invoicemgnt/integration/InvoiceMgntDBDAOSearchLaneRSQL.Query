@@ -4,12 +4,12 @@
 		<query name="InvoiceMgntDBDAOSearchLaneRSQL">
 			<desc><![CDATA[a]]></desc>
 			<sql><![CDATA[
-SELECT 
-	distinct(rlane_cd)
+SELECT rlane_cd
 FROM joo_carrier
 WHERE jo_crr_cd IN (
 	#foreach($key IN ${obj_list_no}) #if($velocityCount < $obj_list_no.size()) '$key', #else '$key' #end #end
-)			]]></sql>
+)
+GROUP BY rlane_cd			]]></sql>
 			<params>
 			</params>
 		</query>
