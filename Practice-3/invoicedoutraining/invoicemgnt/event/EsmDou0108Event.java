@@ -13,8 +13,6 @@
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.event;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchLaneVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.support.layer.event.EventSupport;
 
@@ -36,38 +34,33 @@ public class EsmDou0108Event extends EventSupport {
 	/** Table Value Object 조회 조건 및 단건 처리  */
 	SummaryVO summaryVO = null;
 	DetailsVO detailsVO = null;
-	SearchPartnerVO searchPartnerVO = null;
-	SearchLaneVO searchLaneVO = null;
+	
 		
 	/** Table Value Object Multi Data 처리 */
 	SummaryVO[] summaryVOs = null;
 	DetailsVO[] detailsVOs = null;
-	SearchPartnerVO[] searchPartnerVOs = null;	
-	SearchLaneVO[] searchLaneVOs = null;
+	
 
 	public EsmDou0108Event(){}
 	
 	/**
 	 * 
-	 * @param jooCarrierVO
+	 * @param SummaryVO summaryVO
 	 */
 	
-	public void setSummaryVO(SummaryVO jooCarrierVO){
-		this. summaryVO = jooCarrierVO;
+	public void setSummaryVO(SummaryVO summaryVO){
+		this. summaryVO = summaryVO;
 	}
 
 	/**
 	 * 
-	 * @param jooCarrierVOs
+	 * @param SummaryVO[] summaryVOs
 	 */
-	public void setJooCarrierVOS(SummaryVO[] jooCarrierVOs){
-		this. summaryVOs = jooCarrierVOs;
+	
+	public void setSummaryVOS(SummaryVO[] summaryVOs){
+		this. summaryVOs = summaryVOs;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public SummaryVO getSummaryVO(){
 		return summaryVO;
 	}
@@ -76,14 +69,13 @@ public class EsmDou0108Event extends EventSupport {
 		return summaryVOs;
 	}
 
-	
 	public DetailsVO getDetailsVO() {
 		return detailsVO;
 	}
 
 	/**
 	 * 
-	 * @param detailsVO
+	 * @param DetailsVO detailsVO
 	 */
 	public void setDetailsVO(DetailsVO detailsVO) {
 		this.detailsVO = detailsVO;
@@ -95,58 +87,9 @@ public class EsmDou0108Event extends EventSupport {
 
 	/**
 	 * 
-	 * @param detailsVOs
+	 * @param DetailsVO[] detailsVOs
 	 */
 	public void setDetailsVOs(DetailsVO[] detailsVOs) {
 		this.detailsVOs = detailsVOs;
 	}
-
-	public SearchPartnerVO getSearchPartnerVO() {
-		return searchPartnerVO;
-	}
-
-	/**
-	 * 
-	 * @param searchPartnerVO
-	 */
-	public void setSearchPartnerVO(SearchPartnerVO searchPartnerVO) {
-		this.searchPartnerVO = searchPartnerVO;
-	}
-
-	public SearchPartnerVO[] getSearchPartnerVOs() {
-		return searchPartnerVOs;
-	}
-
-	/**
-	 * 
-	 * @param searchPartnerVOs
-	 */
-	public void setSearchPartnerVOs(SearchPartnerVO[] searchPartnerVOs) {
-		this.searchPartnerVOs = searchPartnerVOs;
-	}
-
-	public SearchLaneVO getSearchLaneVO() {
-		return searchLaneVO;
-	}
-
-	/** 
-	 * 
-	 * @param searchLaneVO
-	 */
-	public void setSearchLaneVO(SearchLaneVO searchLaneVO) {
-		this.searchLaneVO = searchLaneVO;
-	}
-
-	public SearchLaneVO[] getSearchLaneVOs() {
-		return searchLaneVOs;
-	}
-
-	/**
-	 * 
-	 * @param searchLaneVOs
-	 */
-	public void setSearchLaneVOs(SearchLaneVO[] searchLaneVOs) {
-		this.searchLaneVOs = searchLaneVOs;
-	}
-
 }

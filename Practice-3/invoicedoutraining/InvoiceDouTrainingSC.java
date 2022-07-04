@@ -12,7 +12,6 @@
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic.InvoiceMgntBC;
@@ -20,7 +19,6 @@ import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic.InvoiceMgn
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.event.EsmDou0108Event;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration.InvoiceMgntDBDAO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.component.message.ErrorHandler;
 import com.clt.framework.core.layer.event.Event;
@@ -101,7 +99,7 @@ public class InvoiceDouTrainingSC extends ServiceCommandSupport {
 			}
 			
 			else if (e.getFormCommand().isCommand(FormCommand.COMMAND01)) {
-				eventResponse = excelDownloadFromServer(e);
+				eventResponse = excelDownloadFromServer(e); 
 			}
 		}
 		return eventResponse;
@@ -173,7 +171,7 @@ public class InvoiceDouTrainingSC extends ServiceCommandSupport {
 
 		try{
 			// 1. Search partners
-			List<SearchPartnerVO> listPartners = command.getAllPartner(event.getSearchPartnerVO());
+			List<SummaryVO> listPartners = command.getPartner(event.getSummaryVO());
 			StringBuilder partnerBuilder = new StringBuilder();
 			
 			if(listPartners != null){
@@ -261,17 +259,41 @@ public class InvoiceDouTrainingSC extends ServiceCommandSupport {
 		return eventResponse;
 	}
 	
+	/**
+	 * ESM_DOU_0108 : [이벤트]<br>
+	 * [비즈니스대상]을 [행위]합니다.<br>
+	 * 
+	 * @param Event e
+	 * @return EventResponse
+	 * @exception EventException
+	 */
 	private EventResponse excelDownloadFromServer(Event e) throws EventException {
-		InvoiceMgntBC command = new InvoiceMgntBCImpl();
-		EsmDou0108Event event = (EsmDou0108Event)e;
-		GeneralEventResponse eventResponse = new GeneralEventResponse();
-		SummaryVO joo = event.getSummaryVO();
+		// Solution 1
+//		InvoiceMgntBC command = new InvoiceMgntBCImpl();
+//		DownExcelFromServer108Event event = (DownExcelFromServer108Event)e;
+//		GeneralEventResponse eventResponse = new GeneralEventResponse();
+//		SummaryVO joo = event.getSummaryVO();
+//		
+//		eventResponse.setCustomData("vos", command.searchSummaryVO(event.getSummaryVO()));
+//		eventResponse.setCustomData("title", joo.getColumn());
+//		eventResponse.setCustomData("columns",joo.getColumn());
+//		eventResponse.setCustomData("fileName", "downLoadExcel2.xls");
+//		eventResponse.setCustomData("isZip", false);
 		
-		eventResponse.setCustomData("vos", command.searchSummaryVO(event.getSummaryVO()));
-		eventResponse.setCustomData("title", joo.getColumn());
-		eventResponse.setCustomData("columns",joo.getColumn());
-		eventResponse.setCustomData("fileName", "downLoadExcel2.xls");
-		eventResponse.setCustomData("isZip", false);
+		// Solution 2
+		GeneralEventResponse eventResponse = new GeneralEventResponse();
+		EsmDou0108Event event = (EsmDou0108Event)e;
+		InvoiceMgntBC command = new InvoiceMgntBCImpl();
+
+		try{
+			List<Object> list = command.excelDownloadFromServer(event.getDetailsVO());
+			eventResponse.setRsVoList(list);
+		}catch(EventException ex){
+			throw new EventException(new ErrorHandler(ex).getMessage(),ex);
+		}catch(Exception ex){
+			throw new EventException(new ErrorHandler(ex).getMessage(),ex);
+		}
+		
 		return eventResponse;
 	}
 }

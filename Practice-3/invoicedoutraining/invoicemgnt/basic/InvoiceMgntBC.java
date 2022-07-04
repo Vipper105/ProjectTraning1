@@ -15,7 +15,6 @@ package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic;
 import java.util.List;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.core.layer.event.EventException;
 
@@ -55,7 +54,7 @@ public interface InvoiceMgntBC {
 	 * @return List<SearchPartnerVO>
 	 * @exception EventException
 	 */
-	public List<SearchPartnerVO> getAllPartner(SearchPartnerVO searchPartnerVO) throws EventException;
+	public List<SummaryVO> getPartner(SummaryVO summaryVO) throws EventException;
 	
 	/**
 	 * [비즈니스대상]을 [행위] 합니다.<br>
@@ -74,5 +73,14 @@ public interface InvoiceMgntBC {
 	 * @exception EventException
 	 */
 	public List<SummaryVO> searchTrade(SummaryVO summaryVO) throws EventException;
+	
+	/**
+	 * [비즈니스대상]을 [행위] 합니다.<br>
+	 * 
+	 * @param DetailsVO detailsVO
+	 * @return List<Object>
+	 * @exception EventException
+	 */
+	public List<Object> excelDownloadFromServer(DetailsVO detailsVO)  throws EventException;
 
 }

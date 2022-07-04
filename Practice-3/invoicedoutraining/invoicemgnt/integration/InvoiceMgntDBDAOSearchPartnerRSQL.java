@@ -4,10 +4,10 @@
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2022.06.08
+*@LastModifyDate : 2022.06.30
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2022.06.08 
+* 2022.06.30 
 * 1.0 Creation
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration;

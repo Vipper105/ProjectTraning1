@@ -20,7 +20,6 @@ import java.util.Map;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic.InvoiceMgntBCImpl;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.component.message.ErrorHandler;
 import com.clt.framework.component.rowset.DBRowSet;
@@ -93,8 +92,8 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 	/**
 	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
-	 * @param JooCarrierVO jooCarrierVO
-	 * @return List<JooCarrierVO>
+	 * @param DetailsVO detailsVO
+	 * @return List<DetailsVO>
 	 * @exception DAOException
 	 */
 	 @SuppressWarnings("unchecked")
@@ -109,9 +108,22 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 		try{
 			if(detailsVO != null){
 				Map<String, String> mapVO = detailsVO .getColumnValues();
-			
+				
+				List<String> obj_list_no = new ArrayList<>();
+				
+				if(detailsVO.getJoCrrCd() != null){			
+					String[] crr_cd = detailsVO.getJoCrrCd().split(",");
+					if(crr_cd.length > 0){
+						for(int i=0;i<crr_cd.length;i++){
+							obj_list_no.add(crr_cd[i]);
+						}
+					}
+				}
+		
 				param.putAll(mapVO);
+				param.put("obj_list_no",obj_list_no);
 				velParam.putAll(mapVO);
+				velParam.put("obj_list_no",obj_list_no);
 			}
 			dbRowset = new SQLExecuter("").executeQuery((ISQLTemplate)new InvoiceMgntDBDAODetailsVORSQL(), param, velParam);
 			list = (List)RowSetUtil.rowSetToVOs(dbRowset, DetailsVO .class);
@@ -133,23 +145,23 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 	 * @exception DAOException
 	 */
 	 @SuppressWarnings("unchecked")
-	public List<SearchPartnerVO> searchAllPartner(SearchPartnerVO searchPartnerVO) throws DAOException {
+	public List<SummaryVO> searchPartner(SummaryVO summaryVO) throws DAOException {
 		DBRowSet dbRowset = null;
-		List<SearchPartnerVO> list = null;
+		List<SummaryVO> list = null;
 		//query parameter
 		Map<String, Object> param = new HashMap<String, Object>();
 		//velocity parameter
 		Map<String, Object> velParam = new HashMap<String, Object>();
 
 		try{
-			if(searchPartnerVO != null){
-				Map<String, String> mapVO = searchPartnerVO .getColumnValues();
+			if(summaryVO != null){
+				Map<String, String> mapVO = summaryVO .getColumnValues();
 			
 				param.putAll(mapVO);
 				velParam.putAll(mapVO);
 			}
 			dbRowset = new SQLExecuter("").executeQuery((ISQLTemplate)new InvoiceMgntDBDAOSearchPartnerRSQL(), param, velParam);
-			list = (List)RowSetUtil.rowSetToVOs(dbRowset, SearchPartnerVO .class);
+			list = (List)RowSetUtil.rowSetToVOs(dbRowset, SummaryVO .class);
 		} catch(SQLException se) {
 			log.error(se.getMessage(),se);
 			throw new DAOException(new ErrorHandler(se).getMessage());
@@ -239,4 +251,52 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 		}
 		return list;
 	} 
+	
+	
+	/**
+	 * [처리대상] 정보를 [행위] 합니다.<br>
+	 * 
+	 * @param DetailsVO detailsVO
+	 * @return List<DetailsVO>
+	 * @exception DAOException
+	 */
+	 @SuppressWarnings("unchecked")
+	public DBRowSet excelDownloadFromServer(DetailsVO detailsVO) throws DAOException {
+		DBRowSet dbRowset = null;
+		//query parameter
+		Map<String, Object> param = new HashMap<String, Object>();
+		//velocity parameter
+		Map<String, Object> velParam = new HashMap<String, Object>();
+
+		try{
+			if(detailsVO != null){
+				Map<String, String> mapVO = detailsVO .getColumnValues();
+				
+				List<String> obj_list_no = new ArrayList<>();
+				
+				if(detailsVO.getJoCrrCd() != null){			
+					String[] crr_cd = detailsVO.getJoCrrCd().split(",");
+					if(crr_cd.length > 0){
+						for(int i=0;i<crr_cd.length;i++){
+							obj_list_no.add(crr_cd[i]);
+						}
+					}
+				}
+		
+				param.putAll(mapVO);
+				param.put("obj_list_no",obj_list_no);
+				velParam.putAll(mapVO);
+				velParam.put("obj_list_no",obj_list_no);
+			}
+			dbRowset = new SQLExecuter("").executeQuery((ISQLTemplate)new InvoiceMgntDBDAODetailsVORSQL(), param, velParam);
+		} catch(SQLException se) {
+			log.error(se.getMessage(),se);
+			throw new DAOException(new ErrorHandler(se).getMessage());
+		} catch(Exception ex) {
+			log.error(ex.getMessage(),ex);
+			throw new DAOException(new ErrorHandler(ex).getMessage());
+		}
+		return dbRowset;
+	 }
+	
 }

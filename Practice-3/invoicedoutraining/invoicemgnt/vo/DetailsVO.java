@@ -483,7 +483,7 @@ public class DetailsVO extends AbstractValueObject {
 	 */
 	public void fromRequest(HttpServletRequest request, String prefix) {
 		setCsrNo(JSPUtil.getParameter(request, prefix + "csr_no", ""));
-		setAcctYrmonFr(JSPUtil.getParameter(request, prefix + "acct_yrmon_fr", ""));
+		setAcctYrmonFr(JSPUtil.getParameter(request, prefix + "acct_yrmon_from", ""));
 		setInvRevActAmt(JSPUtil.getParameter(request, prefix + "inv_rev_act_amt", ""));
 		setLoclCurrCd(JSPUtil.getParameter(request, prefix + "locl_curr_cd", ""));
 		setCustVndrSeq(JSPUtil.getParameter(request, prefix + "cust_vndr_seq", ""));
@@ -529,7 +529,7 @@ public class DetailsVO extends AbstractValueObject {
   
 		try {
 			String[] csrNo = (JSPUtil.getParameter(request, prefix	+ "csr_no", length));
-			String[] acctYrmonFr = (JSPUtil.getParameter(request, prefix	+ "acct_yrmon_fr", length));
+			String[] acctYrmonFr = (JSPUtil.getParameter(request, prefix	+ "acct_yrmon_from", length));
 			String[] invRevActAmt = (JSPUtil.getParameter(request, prefix	+ "inv_rev_act_amt", length));
 			String[] loclCurrCd = (JSPUtil.getParameter(request, prefix	+ "locl_curr_cd", length));
 			String[] custVndrSeq = (JSPUtil.getParameter(request, prefix	+ "cust_vndr_seq", length));

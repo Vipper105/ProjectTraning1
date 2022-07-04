@@ -4,10 +4,10 @@
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2022.06.07
+*@LastModifyDate : 2022.06.30
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2022.06.07 
+* 2022.06.30 
 * 1.0 Creation
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration;
@@ -61,12 +61,12 @@ public class InvoiceMgntDBDAOSearchLaneRSQL implements ISQLTemplate{
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("select " ).append("\n"); 
+		query.append("SELECT " ).append("\n"); 
 		query.append("	distinct(rlane_cd)" ).append("\n"); 
-		query.append("from joo_carrier" ).append("\n"); 
-		query.append("where jo_crr_cd IN (" ).append("\n"); 
+		query.append("FROM joo_carrier" ).append("\n"); 
+		query.append("WHERE jo_crr_cd IN (" ).append("\n"); 
 		query.append("	#foreach($key IN ${obj_list_no}) #if($velocityCount < $obj_list_no.size()) '$key', #else '$key' #end #end" ).append("\n"); 
-		query.append(")		" ).append("\n"); 
+		query.append(")" ).append("\n"); 
 
 	}
 }

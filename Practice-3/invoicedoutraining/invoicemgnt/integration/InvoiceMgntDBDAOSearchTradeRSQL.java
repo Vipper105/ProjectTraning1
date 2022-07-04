@@ -4,10 +4,10 @@
 *@FileTitle : 
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2022.06.09
+*@LastModifyDate : 2022.06.30
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2022.06.09 
+* 2022.06.30 
 * 1.0 Creation
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration;
@@ -70,14 +70,18 @@ public class InvoiceMgntDBDAOSearchTradeRSQL implements ISQLTemplate{
 	 * Query 생성
 	 */
 	public void setQuery(){
-		query.append("select " ).append("\n"); 
-		query.append("	distinct(trd_cd)" ).append("\n"); 
-		query.append("from joo_carrier" ).append("\n"); 
-		query.append("where rlane_cd = @[rlane_cd] " ).append("\n"); 
-		query.append("and" ).append("\n"); 
-		query.append("jo_crr_cd IN (" ).append("\n"); 
+		query.append("SELECT B.trd_cd" ).append("\n"); 
+		query.append("FROM " ).append("\n"); 
+		query.append("	(" ).append("\n"); 
+		query.append("	SELECT distinct(trd_cd)" ).append("\n"); 
+		query.append("	FROM joo_carrier " ).append("\n"); 
+		query.append("	WHERE rlane_cd = @[rlane_cd] " ).append("\n"); 
+		query.append("	AND jo_crr_cd IN (" ).append("\n"); 
 		query.append("	#foreach($key IN ${obj_list_no}) #if($velocityCount < $obj_list_no.size()) '$key', #else '$key' #end #end" ).append("\n"); 
-		query.append(")" ).append("\n"); 
+		query.append("	)" ).append("\n"); 
+		query.append("	) B" ).append("\n"); 
+		query.append("" ).append("\n"); 
+		query.append("WHERE B.trd_cd IS NOT NULL" ).append("\n"); 
 
 	}
 }

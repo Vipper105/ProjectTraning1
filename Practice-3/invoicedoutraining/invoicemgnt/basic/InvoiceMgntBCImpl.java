@@ -12,13 +12,16 @@
 =========================================================*/
 package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.basic;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.integration.InvoiceMgntDBDAO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.component.message.ErrorHandler;
+import com.clt.framework.component.rowset.DBRowSet;
 import com.clt.framework.core.layer.event.EventException;
 import com.clt.framework.core.layer.integration.DAOException;
 import com.clt.framework.support.layer.basic.BasicCommandSupport;
@@ -86,9 +89,9 @@ public class InvoiceMgntBCImpl extends BasicCommandSupport implements InvoiceMgn
 	 * @exception EventException
 	 */
 	@Override
-	public List<SearchPartnerVO> getAllPartner(SearchPartnerVO searchPartnerVO) throws EventException {
+	public List<SummaryVO> getPartner(SummaryVO summaryVO) throws EventException {
 		try {
-			return dbDao.searchAllPartner(searchPartnerVO);
+			return dbDao.searchPartner(summaryVO);
 		} catch(DAOException ex) {
 			throw new EventException(new ErrorHandler(ex).getMessage(),ex);
 		} catch (Exception ex) {
@@ -122,8 +125,7 @@ public class InvoiceMgntBCImpl extends BasicCommandSupport implements InvoiceMgn
 	 * @exception EventException
 	 */
 	@Override
-	public List<SummaryVO> searchTrade(SummaryVO summaryVO)
-			throws EventException {
+	public List<SummaryVO> searchTrade(SummaryVO summaryVO) throws EventException {
 		try {
 			return dbDao.getTrade(summaryVO);
 		} catch (DAOException ex) {
@@ -131,6 +133,48 @@ public class InvoiceMgntBCImpl extends BasicCommandSupport implements InvoiceMgn
 		} catch (Exception ex) {
 			throw new EventException(new ErrorHandler(ex).getMessage(), ex);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param DetailsVO detailsVO
+	 * @return List<Object>
+	 * @exception EventException
+	 */
+	@Override
+	public List<Object> excelDownloadFromServer(DetailsVO detailsVO) throws EventException {
+		try{
+			DBRowSet rs = dbDao.excelDownloadFromServer(detailsVO);
+			List<Object> li=new ArrayList<>();
+			Map<Object, Object> mp=null;
+			String prefix = "sheet2_";
+			while (rs.next()){
+				mp=new HashMap<>(); 
+				mp.put(prefix+   "csr_no",rs.getString("CSR_NO"));
+			    mp.put(prefix+ "inv_rev_act_amt",rs.getString("INV_REV_ACT_AMT")); 
+			    mp.put(prefix+ "locl_curr_cd",rs.getString("LOCL_CURR_CD"));
+			    mp.put(prefix+ "cust_vndr_seq",rs.getString("CUST_VNDR_SEQ")); 
+			    mp.put( prefix+"jo_crr_cd",rs.getString("JO_CRR_CD"));
+			    mp.put(prefix+ "rlane_cd",rs.getString("RLANE_CD")); 
+			    mp.put(prefix+ "rev_exp",rs.getString("REV_EXP"));
+			    mp.put(prefix+ "cust_vndr_cnt_cd",rs.getString("CUST_VNDR_CNT_CD")); 
+			    mp.put(prefix+ "inv_no",rs.getString("INV_NO"));
+			    mp.put(prefix+ "cust_vndr_eng_nm",rs.getString("CUST_VNDR_ENG_NM"));
+			    mp.put(prefix+ "inv_exp_act_amt",rs.getString("INV_EXP_ACT_AMT")); 
+			    mp.put(prefix+ "item",rs.getString("ITEM"));
+			    mp.put(prefix+ "prnr_ref_no",rs.getString("PRNR_REF_NO")); 
+			    mp.put(prefix+ "apro_flg",rs.getString("APRO_FLG")); 
+			    li.add(mp); 
+			}
+
+			return li;
+		} catch (DAOException ex) {
+			throw new EventException(new ErrorHandler(ex).getMessage(), ex);
+		} catch (Exception ex){
+			throw new EventException(new ErrorHandler(ex).getMessage(), ex);
+		}
+		
+
 	}
 	
 }

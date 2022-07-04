@@ -51,25 +51,19 @@ function loadPage() {
     // Initialize default screen
     initializeDefault();
     
-   
-
     for (var i = 0; i < sheetObjects.length; i++) {
         ComConfigSheet(sheetObjects[i]);
         initSheet(sheetObjects[i], i + 1);
         ComEndConfigSheet(sheetObjects[i]);
     }
 
-    
     // Initialize tab
     initializeTab();
 
     // Initialize periods
     initPeriod();
    
-    // Show data when loading page
-//    for(var j=0; j < sheetObjects.length; j++){
-//    	doActionIBSheet(sheetObjects[j], document.form, IBSEARCH);   	
-//    }
+    // Show data when loading page  
     doActionIBSheet(sheetObjects[0], document.form, IBSEARCH);
  
 }
@@ -122,7 +116,6 @@ function processButtonClick() {
             		if (isOverThreeMonth()) {
             			if (!isOK) {
             				if (confirm("Year Month over 3 months, do you realy want to get data?")) {
-//                            return;
             					isOK = true;
             				} else {
             					isOK = false;
@@ -145,7 +138,7 @@ function processButtonClick() {
                 doActionIBSheet(sheetObject1, formObj, IBDOWNEXCEL);
                 break;
             case "btn_Down":
-            	doActionIBSheet(sheetObject1, formObj, IBDOWNEXCEL2);
+            	doActionIBSheet(sheetObject2, formObj, IBDOWNEXCEL2);
                 break;
 
         }
@@ -197,7 +190,6 @@ function setTabObject(tab_obj) {
 
 
 // ↑ ===========================================    Set array for components   ==========================================
-
 
 
 // ↓ ===========================================    Initialize components   ==========================================
@@ -311,8 +303,6 @@ function initSheet(sheetObj, sheetNo) {
                 ];
 
                 InitColumns(cols);
-                // SetEditable(1);
-                // SetAutoSumPosition(1);
                 resizeSheet();
             }
             break;
@@ -349,8 +339,6 @@ function initSheet(sheetObj, sheetNo) {
                 ];
 
                 InitColumns(cols);
-                // SetEditable(1);
-                //  SetAutoSumPosition(1);
                 SetWaitImageVisible(0);
                 resizeSheet();
             }
@@ -369,7 +357,6 @@ function initSheet(sheetObj, sheetNo) {
 function addComboItem(comboObj, comboItems) {
     for (var i = 0; i < comboItems.length; i++) {
         var comboItem = comboItems[i].split(",");
-        //comboObj.InsertItem(i, comboItem[0] + "|" + comboItem[1], comboItem[1]);
         //NYK Modify 2014.10.21
         if (comboItem.length == 1) {
             comboObj.InsertItem(i, comboItem[0], comboItem[0]);
@@ -430,7 +417,6 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
             break;
 
         case IBDOWNEXCEL:
-        	
             if (sheetObj.RowCount() < 1) {
                 ComShowCodeMessage("COM132501");
             } else {
@@ -439,23 +425,37 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
                 for (let i = 0; i < sheetObjects.length; i++) {
                     sheetObjects[i].Down2Excel({ FileName: "excel2", SheetName: "sheet" + (i + 1), DownCols: makeHiddenSkipCol(sheetObjects[i]), SheetDesign: 1, Merge: 1 });
                 }
-                sheetObjects[0].Down2ExcelBuffer(false);   
+                sheetObjects[0].Down2ExcelBuffer(false);
+                
             }
 
             break;
             
         case IBDOWNEXCEL2: //삭제
-    		if (sheetObj.id == "sheetSummary") {
-    			formObj.f_cmd.value = COMMAND01;
-//    			formObj.target="ExcelDownloadGS.do";
-    			formObj.target="ESM_DOU_0108GS.do";
-    			formObj.submit();
-//    			sheetObj.GetSearchXml("ExcelDownloadGS.do", sheetObj
-//    					.GetSaveString()
-//    					+ "&" + FormQueryString(formObj));
-    		}
-    		break;
-    	
+//    		if (sheetObj.id == "sheetSummary") {
+//    			formObj.f_cmd.value = COMMAND01;
+//    			formObj.target="ESM_DOU_0108GS.do";
+//    			formObj.submit();
+//    		}
+        	
+        	
+        	if (sheetObj.id == "sheetDetails") {
+        		formObj.f_cmd.value = COMMAND01;
+    			let param ={
+    					URL:"/opuscntr/ESM_DOU_0108DL.do",
+    					ExtendParam:FormQueryString(formObj),
+    					FileName:"Details.xls",
+    					DownCols: makeHiddenSkipCol(sheetObj),
+    					Merge:1,
+    					SheetDesign:1,
+    					KeyFieldMark:0,
+    					SheetName:'Details'
+    			};
+    			sheetObjects[1].DirectDown2Excel(param);
+        		
+        	}
+
+        	break;
     }
 
 }
@@ -492,9 +492,6 @@ function isMissingSearchOption(){
 	if(isMissOpt){
 		ComShowMessage(errMsg);
 		document.getElementById(itemOpt).focus();
-//		comboObjects[1].Focus();
-//		comboObjects[1].DisplayDropDownList(true);
-//		itemOpt.DisplayDropDownList(true);
 		return true;
 	}			
 
@@ -607,8 +604,10 @@ function resetForm(formObj) {
  * 
  **/
 function s_lane_OnChange() {
+	ComOpenWait(true);
     s_trade.SetEnable(true);
     getTradeComboData();
+    ComOpenWait(false);
 }
 
 /**
@@ -708,13 +707,14 @@ function sheetSummary_OnDblClick(sheetObj, Row, Col) {
 		var prefix = "sheet1_";
 		var prefix2 = "sheet2_";
 		var saveNames = ["jo_crr_cd", "rlane_cd", "inv_no", "csr_no", "locl_curr_cd", "prnr_ref_no"];
-		var summaryData=getDataRow(sheetSummary, Row, saveNames, prefix);
+		var summaryDataRow = getDataRow(sheetSummary, Row, saveNames, prefix);
 		var size = sheetDetails.RowCount();
-		
+		var detailsDataRow = '';
 		// i starts equal 2 because i=0,1 is corresponding to title rows of sheet
 		for(var i= 2 ; i<=size ; i++){
+			detailsDataRow = getDataRow(sheetDetails, i, saveNames, prefix2)
 			// compare data of sheetSummary and sheetDetails
-			if(summaryData == getDataRow(sheetDetails, i, saveNames, prefix2)){
+			if(summaryDataRow == detailsDataRow){
 				
 				tab1_OnChange(tabObjects[1], 1);
 				// select to [Details] tab
@@ -749,8 +749,8 @@ function getDataRow(sheetObj, row, saveNames, prefix){
  * 
  **/
 function getLaneComboData() {
-//    s_lane.RemoveAll();
-//    s_trade.RemoveAll();
+	// s_lane.RemoveAll();
+	// s_trade.RemoveAll();
     var formObj = document.form;
     formObj.f_cmd.value = SEARCH03;
     // var xml = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do",FormQueryString(document.form));
@@ -758,9 +758,9 @@ function getLaneComboData() {
     let sParam1 = FormQueryString(formObj) + "&" + ComGetPrefixParam(arr1);
     
     // sParam1 = replaceStr(sParam1);
-    
     let sXml1 = sheetObjects[0].GetSearchData("ESM_DOU_0108GS.do", sParam1);
     lanes = ComGetEtcData(sXml1, "lanes");
+    
     
     generateDataCombo(comboObjects[1], lanes);	 
 }
@@ -825,14 +825,23 @@ function s_partner_OnCheckClick(Index, Code, Checked) {
  		s_trade.RemoveAll();
  		
  		// Search combobox Partner
- 	   doActionIBSheet(sheetObjects[0], document.form, IBSEARCH);   	
- 	   doActionIBSheet(sheetObjects[1], document.form, IBSEARCH);   	
+// 	   doActionIBSheet(sheetObjects[0], document.form, IBSEARCH);   	
+// 	   doActionIBSheet(sheetObjects[1], document.form, IBSEARCH);   	
     }
 
-    getLaneComboData();
-    
- 
 }
+
+/**
+ * Events when click out on items of combobox Partner
+ * 
+ */
+function s_partner_OnBlur(){
+	ComOpenWait(true);
+	getLaneComboData();
+//	s_lane.DisplayDropDownList(true);
+	ComOpenWait(false);
+}
+
 
 // ↑ ===========================================    Generate combobox   ==========================================
 

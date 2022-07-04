@@ -15,7 +15,6 @@ package com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.event;
 import javax.servlet.http.HttpServletRequest;
 
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.DetailsVO;
-import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SearchPartnerVO;
 import com.clt.apps.opus.esm.clv.invoicedoutraining.invoicemgnt.vo.SummaryVO;
 import com.clt.framework.component.util.JSPUtil;
 import com.clt.framework.core.controller.html.HTMLActionException;
@@ -55,7 +54,7 @@ public class ESM_DOU_0108HTMLAction extends HTMLActionSupport {
 		EsmDou0108Event event = new EsmDou0108Event();
 		
 		if(command.isCommand(FormCommand.MULTI)) {
-			event.setJooCarrierVOS((SummaryVO[])getVOs(request, SummaryVO .class,""));
+			event.setSummaryVOS((SummaryVO[])getVOs(request, SummaryVO .class,""));
 		}
 		else if(command.isCommand(FormCommand.SEARCH)) {
 			SummaryVO summaryVO = new SummaryVO();
@@ -75,7 +74,7 @@ public class ESM_DOU_0108HTMLAction extends HTMLActionSupport {
 		}
 		
 		else if(command.isCommand(FormCommand.DEFAULT)) {
-			event.setSearchPartnerVO((SearchPartnerVO)getVO(request, SearchPartnerVO .class,""));
+			event.setSummaryVO((SummaryVO)getVO(request, SummaryVO .class,""));
 		}
 
 		else if(command.isCommand(FormCommand.SEARCH03)) {
@@ -91,14 +90,8 @@ public class ESM_DOU_0108HTMLAction extends HTMLActionSupport {
 			event.setSummaryVO(jooCarrierVO);
 		}
 		
-		else if(command.isCommand(FormCommand.COMMAND01)) {
-			SummaryVO summaryVO = new SummaryVO();
-			summaryVO.setAcctYrmonFr(JSPUtil.getParameter(request, "acct_yrmon_from", ""));
-			summaryVO.setAcctYrmonTo(JSPUtil.getParameter(request, "acct_yrmon_to", ""));
-			summaryVO.setTrdCd(JSPUtil.getParameter(request, "s_trade", ""));
-			summaryVO.setRlaneCd(JSPUtil.getParameter(request, "s_lane", ""));
-			summaryVO.setJoCrrCd(JSPUtil.getParameter(request, "s_partner", ""));
-			event.setSummaryVO(summaryVO);
+		else if(command.isCommand(FormCommand.COMMAND01)) {		
+			event.setDetailsVO((DetailsVO)getVO(request, DetailsVO .class,""));
 		}
 		
 		return  event;
