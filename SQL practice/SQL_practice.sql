@@ -76,88 +76,42 @@ FROM (
   WHERE A.RN = 1;
 
 --C) vi?t câu SQL report xem trong tháng 06, 07, 08, 09 c?a 2019 s?n ph?m có mã code là 00001 bán ?c bao nhiêu cái.
-SELECT
-    a.mon,
-    nvl(b.pro_cd, '00001') AS pro_cd,
-    nvl(b.total, 0)
+SELECT A.DT, B.PRO_CD, NVL(B.TOTAL,0) AS TOTAL
 FROM
-    (
-        SELECT DISTINCT
-            ( substr(ord_dttm, 1, 6) ) AS mon
-        FROM
-            tb_ord
-        WHERE
-            substr(ord_dttm, 1, 5) LIKE '20190'
-            AND substr(ord_dttm, 6, 1) IN ( '6', '7', '8',
-                                            '9' )
-    ) a
-    LEFT OUTER JOIN (
-        SELECT
-            a.mon,
-            pro_cd,
-            COUNT(pro_cd) AS total
-        FROM
-            (
-                SELECT
-                    substr(ord_dttm, 1, 6) AS mon,
-                    pro_cd
-                FROM
-                    tb_ord
-                WHERE
-                    substr(ord_dttm, 1, 5) LIKE '20190'
-                    AND substr(ord_dttm, 6, 1) IN ( '6', '7', '8',
-                                                    '9' )
-                    AND pro_cd LIKE '00001'
-            ) a
-        GROUP BY
-            mon,
-            pro_cd
-    ) b ON a.mon = b.mon;
+  (
+    SELECT '201906' AS DT FROM DUAL
+    UNION ALL   
+    SELECT '201907' AS DT FROM DUAL
+    UNION ALL 
+    SELECT '201908' AS DT FROM DUAL
+    UNION ALL 
+    SELECT '201909' AS DT FROM DUAL
+    ) A 
+    LEFT OUTER JOIN 
+    (SELECT B.PRO_CD, SUBSTR(B.ORD_DTTM, 1, 6) AS ORD_DTTM,  COUNT(*)
+ AS TOTAL 
+      FROM TB_ORD B
+      GROUP BY B.PRO_CD, SUBSTR(B.ORD_DTTM, 1, 6)
+    ) B PARTITION BY (B.PRO_CD)
+    ON A.DT = B.ORD_DTTM;
     
 --D) Gi? s? lúc ??u s?n ph?n 00001 có 100 cái, vi?t report ?? tính s? l??ng remain theo tháng 06, 07, 08, 09
-SELECT
-    doo.pro_cd,
-    doo.total,
-    100 - nvl(SUM(doo.total)
-              OVER(PARTITION BY doo.pro_cd
-                   ORDER BY
-                       doo.mon
-              ), 0) AS remain
+SELECT B.PRO_CD,A.DT, NVL(B.TOTAL,0) AS TOTAL, 100 - NVL(SUM(B.TOTAL) OVER (PARTITION BY B.PRO_CD ORDER BY A.DT),0) AS REMAIN
 FROM
-    (
-        SELECT
-            a.mon                  AS mon,
-            nvl(b.pro_cd, '00001') AS pro_cd,
-            nvl(b.total, 0)        AS total
-        FROM
-            (
-                SELECT DISTINCT
-                    ( substr(ord_dttm, 1, 6) ) AS mon
-                FROM
-                    tb_ord
-                WHERE
-                    substr(ord_dttm, 1, 5) LIKE '20190'
-                    AND substr(ord_dttm, 6, 1) IN ( '6', '7', '8', '9' )
-            ) a
-            LEFT OUTER JOIN (
-                SELECT
-                    a.mon,
-                    pro_cd,
-                    COUNT(pro_cd) AS total
-                FROM
-                    (
-                        SELECT
-                            substr(ord_dttm, 1, 6) AS mon,
-                            pro_cd
-                        FROM
-                            tb_ord
-                        WHERE
-                            substr(ord_dttm, 1, 5) LIKE '20190'
-                            AND substr(ord_dttm, 6, 1) IN ( '6', '7', '8', '9' )
-                            AND pro_cd LIKE '00001'
-                    ) a
-                GROUP BY
-                    mon,
-                    pro_cd
-            ) b ON a.mon = b.mon
-    ) doo;
+  (
+    SELECT '201906' AS DT FROM DUAL
+    UNION ALL 
+    SELECT '201907' AS DT FROM DUAL
+    UNION ALL 
+    SELECT '201908' AS DT FROM DUAL
+    UNION ALL 
+    SELECT '201909' AS DT FROM DUAL
+    ) A 
+    LEFT OUTER JOIN 
+    (SELECT B.PRO_CD, SUBSTR(B.ORD_DTTM, 1, 6) AS ORD_DTTM,  COUNT(*)
+ AS TOTAL 
+      FROM TB_ORD B
+      WHERE B.PRO_CD = '00001'
+      GROUP BY B.PRO_CD, SUBSTR(B.ORD_DTTM, 1, 6)
+    ) B PARTITION BY (B.PRO_CD)
+    ON A.DT = B.ORD_DTTM;
