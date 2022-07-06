@@ -32,7 +32,7 @@ public interface InvoiceMgntBC {
 	 * [비즈니스대상]을 [행위] 합니다.<br>
 	 * 
 	 * @param SummaryVO	summaryVO
-	 * @return List<JooCarrierVO>
+	 * @return List<SummaryVO>
 	 * @exception EventException
 	 */
 	public List<SummaryVO> searchSummaryVO(SummaryVO summaryVO) throws EventException;
@@ -50,8 +50,8 @@ public interface InvoiceMgntBC {
 	/**
 	 * [비즈니스대상]을 [행위] 합니다.<br>
 	 * 
-	 * @param SearchPartnerVO searchPartnerVO
-	 * @return List<SearchPartnerVO>
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
 	 * @exception EventException
 	 */
 	public List<SummaryVO> getPartner(SummaryVO summaryVO) throws EventException;

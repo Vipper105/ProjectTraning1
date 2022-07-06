@@ -47,7 +47,7 @@ public class EsmDou0108ViewAdapterDL extends ViewAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return "";
 	}
 

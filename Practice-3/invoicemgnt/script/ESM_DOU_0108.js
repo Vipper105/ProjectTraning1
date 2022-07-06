@@ -110,12 +110,13 @@ function processButtonClick() {
                 break;
 
             case "btn_Retrieve":
+            	let msg = ComShowCodeMessage('COM132906');
             	// check missing search option
             	if(!isMissingSearchOption()){
             		// check if over three month
             		if (isOverThreeMonth()) {
             			if (!isOK) {
-            				if (confirm("Year Month over 3 months, do you realy want to get data?")) {
+            				if (confirm(msg)) {
             					isOK = true;
             				} else {
             					isOK = false;
@@ -488,10 +489,11 @@ function isMissingSearchOption(){
 	let itemOpt = result[0];
 	let isMissOpt = result[1];
 	
-	let errMsg = "You have input for all searching options.";
 	if(isMissOpt){
-		ComShowMessage(errMsg);
+		// show message when input missing search options
+		ComShowCodeMessage('COM132907');
 		document.getElementById(itemOpt).focus();
+		// itemOpt.SetOutLineColor("#B8D6F6");
 		return true;
 	}			
 

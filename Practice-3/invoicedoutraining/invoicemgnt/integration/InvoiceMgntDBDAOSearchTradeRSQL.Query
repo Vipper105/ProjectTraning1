@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sqls>
 	<querys>
-		<query name=" InvoiceMgntDBDAOSearchTradeRSQL">
+		<query name="InvoiceMgntDBDAOSearchTradeRSQL">
 			<desc><![CDATA[a]]></desc>
 			<sql><![CDATA[
-SELECT trd_cd
-FROM joo_carrier 
-WHERE rlane_cd = @[rlane_cd] 
-AND jo_crr_cd IN (
-#foreach($key IN ${obj_list_no}) #if($velocityCount < $obj_list_no.size()) '$key', #else '$key' #end #end
-)
-GROUP BY trd_cd
-HAVING trd_cd IS NOT NULL			]]></sql>
+SELECT B.trd_cd
+FROM 
+	(
+	SELECT distinct(trd_cd)
+	FROM joo_carrier 
+	WHERE rlane_cd = @[rlane_cd] 
+	AND jo_crr_cd IN (
+	#foreach($key IN ${obj_list_no}) #if($velocityCount < $obj_list_no.size()) '$key', #else '$key' #end #end
+	)
+	) B
+
+WHERE B.trd_cd IS NOT NULL
+			]]></sql>
 			<params>
 				<param name="rlane_cd" type="12" value="ACE" out="Y"/>
 			</params>

@@ -43,8 +43,8 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 	/**
 	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
-	 * @param JooCarrierVO jooCarrierVO
-	 * @return List<JooCarrierVO>
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
 	 * @exception DAOException
 	 */
 	 @SuppressWarnings("unchecked")
@@ -140,8 +140,8 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 	/**
 	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
-	 * @param JooCarrierVO jooCarrierVO
-	 * @return List<JooCarrierVO>
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
 	 * @exception DAOException
 	 */
 	 @SuppressWarnings("unchecked")
@@ -172,6 +172,13 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 		return list;
 	}
 	 
+	/**
+	 * [처리대상] 정보를 [행위] 합니다.<br>
+	 * 
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
+	 * @exception DAOException
+	 */ 
 	@SuppressWarnings("unchecked")
 	public List<SummaryVO> searchLane(SummaryVO summaryVO) throws DAOException {
 		DBRowSet dbRowset = null;
@@ -212,8 +219,15 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 		return list;
 	}
 	 
+	/**
+	 * [처리대상] 정보를 [행위] 합니다.<br>
+	 * 
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
+	 * @exception DAOException
+	 */ 
 	@SuppressWarnings("unchecked")
-	public List<SummaryVO> getTrade(SummaryVO jooCarrierVO) throws DAOException {
+	public List<SummaryVO> getTrade(SummaryVO summaryVO) throws DAOException {
 		DBRowSet dbRowset = null;
 		List<SummaryVO> list = null;
 		// query parameter
@@ -222,12 +236,12 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 		Map<String, Object> velParam = new HashMap<String, Object>();
 
 		try {
-			if (jooCarrierVO != null) {
-				Map<String, String> mapVO = jooCarrierVO.getColumnValues();
+			if (summaryVO != null) {
+				Map<String, String> mapVO = summaryVO.getColumnValues();
 
 				List<String> obj_list_no = new ArrayList<>();
-				if (null != jooCarrierVO.getJoCrrCd()) {
-					String[] joCrrCd = jooCarrierVO.getJoCrrCd().split(",");
+				if (null != summaryVO.getJoCrrCd()) {
+					String[] joCrrCd = summaryVO.getJoCrrCd().split(",");
 					if (joCrrCd.length > 0) {
 						for (int i = 0; i < joCrrCd.length; i++) {
 							obj_list_no.add(joCrrCd[i]);
@@ -257,7 +271,7 @@ public class InvoiceMgntDBDAO extends DBDAOSupport {
 	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
 	 * @param DetailsVO detailsVO
-	 * @return List<DetailsVO>
+	 * @return DBRowSet
 	 * @exception DAOException
 	 */
 	 @SuppressWarnings("unchecked")

@@ -48,8 +48,8 @@ public class InvoiceMgntBCImpl extends BasicCommandSupport implements InvoiceMgn
 	/**
 	 * [비즈니스대상]을 [행위] 합니다.<br>
 	 * 
-	 * @param SummaryVO jooCarrierVO
-	 * @return List<JooCarrierVO>
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
 	 * @exception EventException
 	 */
 	public List<SummaryVO> searchSummaryVO(SummaryVO summaryVO) throws EventException {
@@ -66,8 +66,8 @@ public class InvoiceMgntBCImpl extends BasicCommandSupport implements InvoiceMgn
 	/**
 	 * [비즈니스대상]을 [행위] 합니다.<br>
 	 * 
-	 * @param SummaryVO jooCarrierVO
-	 * @return List<JooCarrierVO>
+	 * @param DetailsVO detailsVO
+	 * @return List<DetailsVO>
 	 * @exception EventException
 	 */
 	public List<DetailsVO> searchDetailsVO(DetailsVO detailsVO) throws EventException {
@@ -84,8 +84,8 @@ public class InvoiceMgntBCImpl extends BasicCommandSupport implements InvoiceMgn
 	/**
 	 * [비즈니스대상]을 [행위] 합니다.<br>
 	 * 
-	 * @param SearchPartnerVO searchPartnerVO
-	 * @return List<SearchPartnerVO>
+	 * @param SummaryVO summaryVO
+	 * @return List<SummaryVO>
 	 * @exception EventException
 	 */
 	@Override
