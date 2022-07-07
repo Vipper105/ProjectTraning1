@@ -110,13 +110,12 @@ function processButtonClick() {
                 break;
 
             case "btn_Retrieve":
-            	let msg = ComShowCodeMessage('COM132906');
             	// check missing search option
             	if(!isMissingSearchOption()){
             		// check if over three month
             		if (isOverThreeMonth()) {
             			if (!isOK) {
-            				if (confirm(msg)) {
+            				if (ComShowCodeConfirm('COM132906')) {
             					isOK = true;
             				} else {
             					isOK = false;
@@ -304,6 +303,7 @@ function initSheet(sheetObj, sheetNo) {
                 ];
 
                 InitColumns(cols);
+                SetWaitImageVisible(0);
                 resizeSheet();
             }
             break;
@@ -486,6 +486,11 @@ function isMissingSearchOption(){
 	 * result[1] : is missing search option
 	 */
 	let result = valueMissOpt();
+	
+	if(result.length == 0){
+		return false;
+	}
+	
 	let itemOpt = result[0];
 	let isMissOpt = result[1];
 	
@@ -508,8 +513,8 @@ function isMissingSearchOption(){
 function valueMissOpt(){
 	
 	let formObj = document.form;
-	let fromDate = formObj.acct_yrmon_from.value;
-	let toDate = formObj.acct_yrmon_to.value;
+//	let fromDate = formObj.acct_yrmon_from.value;
+//	let toDate = formObj.acct_yrmon_to.value;
 	let s_partner = document.getElementById("s_partner").value;
 	let s_lane = document.getElementById("s_lane").value;
 	let s_trade = document.getElementById("s_trade").value;
@@ -517,17 +522,21 @@ function valueMissOpt(){
 	let missOption = [];
 	let missItem = '';
 	
-	if(fromDate.length == 0){
-		missItem = 'fromDate';
-		pushMissOpt(missOption, missItem, true);
+//	if(fromDate.length == 0){
+//		missItem = 'fromDate';
+//		pushMissOpt(missOption, missItem, true);
+//	}
+//	
+//	else if(toDate.length == 0){
+//		missItem = 'toDate';	
+//		pushMissOpt(missOption, missItem, true);
+//	}
+	
+	if(s_partner =='ALL'){
+		return missOption;
 	}
 	
-	else if(toDate.length == 0){
-		missItem = 'toDate';	
-		pushMissOpt(missOption, missItem, true);
-	}
-	
-	else if(s_partner.length == 0){
+	if(s_partner.length == 0){		
 		missItem = 's_partner'; 
 		pushMissOpt(missOption, missItem, true);
 	}
