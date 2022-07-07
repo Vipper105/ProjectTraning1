@@ -501,6 +501,10 @@ function isMissingSearchOption(){
 	
 }
 
+/**
+ * Find option item is missing
+ * 
+ */
 function valueMissOpt(){
 	
 	let formObj = document.form;
@@ -541,6 +545,10 @@ function valueMissOpt(){
 	return missOption;
 } 
 
+/**
+ * Push missing options in array
+ * 
+ */
 function pushMissOpt(missOption, missItem, isMissOpt){
 	missOption.push(missItem);
 	missOption.push(isMissOpt);
