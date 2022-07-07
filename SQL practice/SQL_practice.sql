@@ -44,14 +44,8 @@ GROUP BY CUST_GRP_ID;
 
 -- Câu 15: 
 -- 1)	L?y max(PROD_UNIT_AMT)
-SELECT MAX(PROD_UNIT_AMT)
-FROM TB_PROD;
 -- 2)	L?y  giá tr? min(PROD_UNIT_AMT)
-SELECT MIN(PROD_UNIT_AMT)
-FROM TB_PROD;
 -- 3)	L?y giá tr? trung bình PROD_UNIT_AMT
-SELECT AVG(PROD_UNIT_AMT)
-FROM TB_PROD;
 -- 4)	L?y tên c?a s?n ph?m có PROD_UNIT_AMT l?n nh?t
 SELECT prod_unit_amt AS MAX_AMT, prod_nm AS MAX_NAME, B.minp AS MIN_AMT, B.avgp AS AVG
 from tb_prod A,(SELECT MAX(prod_unit_amt) AS MAXP, MIN(prod_unit_amt) AS MINP, AVG(prod_unit_amt) AS AVGP from tb_prod) B
