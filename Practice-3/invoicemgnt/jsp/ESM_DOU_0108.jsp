@@ -32,19 +32,12 @@
 	String successFlag = "";
 	String codeList  = "";
 	String pageRows  = "100";
-
-	String strUsr_id		= "";
-	String strUsr_nm		= "";
 	String partners   		= "";
 	// String lanes			= "";
 	
 	Logger log = Logger.getLogger("com.clt.apps.InvoiceDouTraining.InvoiceMgnt");
 
 	try {
-	   	SignOnUserAccount account=(SignOnUserAccount)session.getAttribute(CommonWebKeys.SIGN_ON_USER_ACCOUNT);
-		strUsr_id =	account.getUsr_id();
-		strUsr_nm = account.getUsr_nm();
-
 
 		event = (EsmDou0108Event)request.getAttribute("Event");
 		serverException = (Exception)request.getAttribute(CommonWebKeys.EXCEPTION_OBJECT);
@@ -57,16 +50,11 @@
 		GeneralEventResponse eventResponse = (GeneralEventResponse) request.getAttribute("EventResponse");
 		// get data for combobox partners
 		partners = eventResponse.getETCData("partners");
-		// lanes = eventResponse.getETCData("lanes");
+		
 	}catch(Exception e) {
 		out.println(e.toString());
 	}
 %>
-
-<head>
-<title>Invoice Management</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 
 <script language="javascript">
 var partnersCombo = "ALL|<%=partners%>";
@@ -78,7 +66,6 @@ var partnersCombo = "ALL|<%=partners%>";
 		loadPage();
 	}
 </script>
-</head>
 
 <form name="form">
 <input type="hidden" name="f_cmd">
@@ -98,14 +85,11 @@ var partnersCombo = "ALL|<%=partners%>";
 		</div>
 </div>
 
-
-
 <div class="wrap_search_tab">
 		
 		<div class="opus_design_inquiry wFit">
 		    <table class="search">
-		     	<colgroup>
-		     	
+		     	<colgroup>	
 					<col width="100" />				
 					<col width="0" />						
 					<col width="100" />	
@@ -113,11 +97,7 @@ var partnersCombo = "ALL|<%=partners%>";
 					<col width="50" />
 					<col width="0" />
 					<col width="50" />
-					<col width="*" />
-				
-									
-					
-							
+					<col width="*" />							
 			   </colgroup> 
 		        <tbody>
 				<tr>
@@ -141,10 +121,7 @@ var partnersCombo = "ALL|<%=partners%>";
 				</tr>
 				</tbody>
 			</table>
-		
-		</div>
-		
-		
+		</div>	
 </div>
 
 <div class="wrap_result">
@@ -162,7 +139,6 @@ var partnersCombo = "ALL|<%=partners%>";
 		</div>
 		
 	</div>
-
 
 <!-- 개발자 작업  끝 -->
 </form>
