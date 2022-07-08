@@ -47,7 +47,6 @@ public class EsmDou0108Event extends EventSupport {
 	 * set SummaryVO
 	 * @param SummaryVO summaryVO
 	 */
-	
 	public void setSummaryVO(SummaryVO summaryVO){
 		this. summaryVO = summaryVO;
 	}
@@ -64,22 +63,27 @@ public class EsmDou0108Event extends EventSupport {
 
 	/**
 	 * get SummaryVO
+	 * @return
 	 * 
 	 */
+	
 	public SummaryVO getSummaryVO(){
 		return summaryVO;
 	}
 
 	/**
 	 * get list SummaryVO
+	 * @return
 	 * 
 	 */
+
 	public SummaryVO[] getSummaryVOS(){
 		return summaryVOs;
 	}
 
 	/**
 	 * get detailsVO
+	 * @return
 	 * 
 	 */
 	public DetailsVO getDetailsVO() {
@@ -96,6 +100,7 @@ public class EsmDou0108Event extends EventSupport {
 
 	/**
 	 * get list detailsVO
+	 * @return
 	 * 
 	 */
 	public DetailsVO[] getDetailsVOs() {

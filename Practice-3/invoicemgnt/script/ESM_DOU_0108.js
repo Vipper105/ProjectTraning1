@@ -601,6 +601,13 @@ function tab1_OnChange(tabObj, nItem) {
     //------------------------------------------------------//
     beforetab = nItem;
     resizeSheet();
+    
+    if(sheetObjects[0].RowCount() == 0){
+		doActionIBSheet(sheetObjects[0],document.form,IBSEARCH);
+	}
+//    if(sheetObjects[1].RowCount() == 0){
+//		doActionIBSheet(sheetObjects[1],document.form,IBSEARCH);
+//	}
 }
 
 //================     handle event tab  ==================

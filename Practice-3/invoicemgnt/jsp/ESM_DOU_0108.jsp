@@ -33,7 +33,6 @@
 	String codeList  = "";
 	String pageRows  = "100";
 	String partners   		= "";
-	// String lanes			= "";
 	
 	Logger log = Logger.getLogger("com.clt.apps.InvoiceDouTraining.InvoiceMgnt");
 
