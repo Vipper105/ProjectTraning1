@@ -240,8 +240,6 @@ function initTab(tabObj, tabNo) {
     }
 }
 
-
-
 /**
  * Combo Initialization 
  * 
@@ -437,8 +435,7 @@ function doActionIBSheet(sheetObj, formObj, sAction) {
 //    			formObj.f_cmd.value = COMMAND01;
 //    			formObj.target="ESM_DOU_0108GS.do";
 //    			formObj.submit();
-//    		}
-        	
+//    		}       	
         	
         	if (sheetObj.id == "sheetDetails") {
         		formObj.f_cmd.value = COMMAND01;
@@ -605,7 +602,7 @@ function tab1_OnChange(tabObj, nItem) {
     if(sheetObjects[0].RowCount() == 0){
 		doActionIBSheet(sheetObjects[0],document.form,IBSEARCH);
 	}
-//    if(sheetObjects[1].RowCount() == 0){
+//    else if(sheetObjects[1].RowCount() == 0){
 //		doActionIBSheet(sheetObjects[1],document.form,IBSEARCH);
 //	}
 }
@@ -692,14 +689,14 @@ function initPeriod() {
     var ymTo = ComGetNowInfo("ym", "-");
     formObj.acct_yrmon_to.value = ymTo;
     var ymFrom = ComGetDateAdd(formObj.acct_yrmon_to.value + "-01", "M", -2);
-    formObj.acct_yrmon_from.value = GetDateFormat(ymFrom, "ym");
+    formObj.acct_yrmon_from.value = getDateFormat(ymFrom, "ym");
 }
 
 /**
- * Get format date
+ * get format date
  * 
  **/
-function GetDateFormat(obj, sFormat) {
+function getDateFormat(obj, sFormat) {
     var sVal = String(getArgValue(obj));
     sVal = sVal.replace(/\/|\-|\.|\:|\ /g, "");
     if (ComIsEmpty(sVal)) return "";
