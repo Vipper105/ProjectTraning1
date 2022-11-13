@@ -40,7 +40,7 @@ import com.clt.framework.support.view.signon.SignOnUserAccount;
  * @author Vi Nguyen
  * @see CodeMgmtDBDAO
  * @since J2EE 1.6
- */
+ */ 
 
 public class DouTrainingSC extends ServiceCommandSupport {
 	// Login User Information
